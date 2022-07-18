@@ -3,6 +3,9 @@
 # csv백업
 *.csv.bak
 
+#csv다운데이터
+/일별방문객데이터파일
+
 ### Python ###
 # Byte-compiled / optimized / DLL files
 __pycache__/
