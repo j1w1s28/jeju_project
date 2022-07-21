@@ -3,8 +3,20 @@
 # csv백업
 *.csv.bak
 
+#.bak 파일
+*.bak
+
+#복사본 파일
+*복사본*
+
+#test파일들
+test*
+
 #csv다운데이터
 /일별방문객데이터파일
+
+#font폴더
+font/
 
 ### Python ###
 # Byte-compiled / optimized / DLL files
