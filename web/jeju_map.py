@@ -1,17 +1,22 @@
 from crypt import methods
 from unittest import result
 from flask import Flask, request, session, render_template, redirect, url_for
-import sqlite3
-import math
 import pandas as pd
 import json
+import test_db
 
 app = Flask(__name__)
 
+def map():
+    sql = "select * from jeju_data  "
+    data = test_db.db_connect(sql)
+    data = pd.DataFrame(data).T.to_dict()
+    return (data, len(data))
+
 @app.route('/')
-def stay():
-    stay = pd.read_csv('./data/jeju_stay_modified.csv').T.to_dict()
-    return render_template('test.html',result=stay)
+def home():
+    data = map()
+    return render_template('jeju_stay.html',result=data)
 
 if __name__ == '__main__':
     app.run(debug = True)
