@@ -3,13 +3,13 @@ from unittest import result
 from flask import Flask, request, session, render_template, redirect, url_for
 import pandas as pd
 import json
-import test_db
+import jeju_db
 
 app = Flask(__name__)
 
 def map():
     sql = "select * from jeju_data  "
-    data = test_db.db_connect(sql)
+    data = jeju_db.db_connect(sql)
     data = pd.DataFrame(data).T.to_dict()
     return (data, len(data))
 
