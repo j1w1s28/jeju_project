@@ -9,7 +9,7 @@
 <body>
     
 <!-- 지도를 표시할 div 입니다 -->
-<div id="map" style="width:100%;height:750px;"></div>
+<div id="map" style="width:100%;height:500px;"></div>
 
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=1cc07b14640d842cd69b3e2343736a49"></script>
 <script>
@@ -21,6 +21,59 @@ var mapContainer = document.getElementById('map'), // 지도를 표시할 div
 
 // 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
 var map = new kakao.maps.Map(mapContainer, mapOption); 
+
+var data = '{{result}}'
+var jsonString = JSON.stringify(data);
+var jsonParse = JSON.parse(jsonString.replace(/&#39;/g,""));
+var stay = jsonParse;
+console.log(stay);
+
+
+// 지도를 클릭했을때 클릭한 위치에 마커를 추가하도록 지도에 클릭이벤트를 등록합니다
+kakao.maps.event.addListener(map, 'click', function(mouseEvent) {        
+ // 클릭한 위치에 마커를 표시합니다 
+ addMarker(mouseEvent.latLng);             
+ }); 
+
+ // 지도에 표시된 마커 객체를 가지고 있을 배열입니다
+ var markers = [];
+
+
+ // 마커를 생성하고 지도위에 표시하는 함수입니다
+ function addMarker(position) {
+
+     // 마커를 생성합니다
+     var marker = new kakao.maps.Marker({
+         position: position,
+         draggable : true, // 마커를 드래그 가능하도록 설정한다
+         map: map // 마커를 표시할 지도 객체
+        });
+
+            // 생성된 마커를 배열에 추가합니다
+     markers.push(marker);
+ }
+
+
+
+var markerPosition = [];
+for (var i=0; i<stay.length; i++){
+    markerPosition[i]=[latitude,longtude]
+
+    markers.getPostion();
+    markerPosition.push();
+    markerPosition[i][0] = marker.getPostion().getLat();
+    markerPosition[i][1] = marker.getPostion().getlng();
+
+var infowindow = new kakao.maps.InfoWindow({
+    content : markerPosition[i][2]
+});
+
+infowindow.open(map, marker);
+}
+
+
 </script>
+아아아ㅏ 어려웡 ㅜㅜ
+json 인성 쓰레기
 </body>
 </html>
