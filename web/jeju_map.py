@@ -16,7 +16,7 @@ def map():
 @app.route('/')
 def home():
     data = map()
-    return render_template('jeju_stay.html',result=data)
+    return render_template('jeju_map.html',result=data)
 
 if __name__ == '__main__':
     app.run(debug = True)
