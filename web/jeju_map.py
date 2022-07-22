@@ -3,7 +3,7 @@ from unittest import result
 from flask import Flask, request, session, render_template, redirect, url_for
 import pandas as pd
 import json
-import test_db
+import jeju_db
 
 app = Flask(__name__)
 
