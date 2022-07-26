@@ -6,18 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>제주도 지도 🗺</title>
     <style>
-        /* .wrap {position: absolute;left: 0;bottom: 40px;width: 288px;height: 132px;margin-left: -144px;text-align: left;overflow: hidden;font-size: 12px;font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;line-height: 1.5;}
-        .wrap * {padding: 0;margin: 0;} */
         .wrap .info {width:320px; height: 90px;}
-        /* .wrap .info:nth-child(1) {border: 0;box-shadow: 0px 1px 2px rgb(116, 148, 229);} */
-        /* .info .stay_close {position: absolute;top: 10px;right: 10px;color: #888;width: 17px;height: 17px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png');} */
-        /* .info .close:hover {cursor: pointer;} */
-        .info .body {position: relative; overflow: hidden;}
-        .info .title {font-family: 'Malgun Gothic', dotum, '돋움'; text-align:center; padding: 10px; border-bottom: 1px solid 16px; font-weight:bold;}
-        /* .info .title_s {font-family: 'Malgun Gothic', dotum, '돋움'; text-align:center; height: 30px; background: rgb(87, 168, 235); border-bottom: 1px solid rgb(33,150,243);font-size: 16px; font-weight:bold;} */
-        /* .info .title_f {font-family: 'Malgun Gothic', dotum, '돋움'; text-align:center; height: 30px; background: #fc868a; border-bottom: 1px solid #ff6167;font-size: 16px;font-weight: bold;} */
-        /* .info .title_p {font-family: 'Malgun Gothic', dotum, '돋움'; text-align:center; height: 30px; background: #facf4c; border-bottom: 1px solid #ffc107;font-size: 15px;font-weight: bold;} */
-        /* .stay_info .stay_img {display:inline; top:10px; left:5px; width:90px; height:100px; overflow: hidden;} */
+        .info .body {border-radius: 5%; position: relative; overflow: hidden;}
+        .info .title {font-family: 'Malgun Gothic', dotum, '돋움'; text-align:center; padding: 9px; font-weight:bold;}
         .desc .address {font-family: 'Malgun Gothic', dotum, '돋움'; margin:10px 5px 5px 5px; text-align:center; font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
         .desc .phoneno {font-family: 'Malgun Gothic', dotum, '돋움'; margin:5px 5px 5px 5px; text-align:center; font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
         .info .close:hover {cursor: pointer;}
@@ -33,7 +24,8 @@
     var mapContainer = document.getElementById('map'), // 지도를 표시할 div  
         mapOption = { 
             center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-            level: 10 // 지도의 확대 레벨
+            level: 10, // 지도의 확대 레벨
+            mapTypeId : kakao.maps.MapTypeId.ROADMAP
         };
     var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
 
@@ -130,7 +122,7 @@
             var moveLatLng = new kakao.maps.LatLng(positions[i].latlng.Ma, positions[i].latlng.La);   
                 map.setCenter(new kakao.maps.LatLng(positions[i].latlng.Ma, positions[i].latlng.La));
                 map.panTo(moveLatLng);
-                map.setLevel(5);
+                map.setLevel(6);
 
             if(windowChecker != undefined){
                 infowindows[windowChecker].close(map,markers[windowChecker]);
