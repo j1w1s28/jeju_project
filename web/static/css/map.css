@@ -1,0 +1,70 @@
+/* 지도 인포 팝업 */
+.wrap .info {
+    width: 320px;
+    height: 150px;
+}
+.info .body {
+    position: relative;
+    overflow: hidden;
+}
+.info .title {
+    font-family: 'Malgun Gothic', dotum, '돋움';
+    text-align: center;
+    padding: 10px;
+    font-weight: bold;
+}
+.desc .address {
+    font-family: 'Malgun Gothic', dotum, '돋움';
+    margin: 10px 5px 5px 5px;
+    text-align: center;
+    font-size: 13px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.desc .phoneno {
+    font-family: 'Malgun Gothic', dotum, '돋움';
+    margin: 5px 5px 5px 5px;
+    text-align: center;
+    font-size: 13px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* 지도 카테고리 버튼 */
+.category {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 230px;
+    height: 60px;
+    z-index: 10;
+    font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+    font-size: 12px;
+    text-align: center;
+    background-color: #fff;
+    border-radius: 4px;
+}
+
+/* 스크롤바 스타일 */
+.scrollBar { 
+    /* width: 400px; */
+    /* height: 200px; */
+    overflow-y: scroll;
+    }
+
+    .scrollBar::-webkit-scrollbar {
+        width: 10px;  /* 스크롤바의 너비 */
+    }
+    
+    .scrollBar::-webkit-scrollbar-thumb {
+        height: 30%; /* 스크롤바의 길이 */
+        background: #217af4; /* 스크롤바의 색상 */
+        
+        border-radius: 10px;
+    }
+
+    .scrollBar::-webkit-scrollbar-track {
+        background: rgba(33, 122, 244, .1);  /*스크롤바 뒷 배경 색상*/
+    }
