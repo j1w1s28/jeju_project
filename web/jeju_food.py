@@ -11,16 +11,14 @@ def db_data():
     return (data, len(data))
 
 
-
-
 @app.route('/')
 def home():
-    return render_template('test.html')
+    return render_template('index.html')
 
-@app.route('/mapList')
+@app.route('/main')
 def mapList():
     data = db_data()
-    return render_template('map_list.html', result=data)
+    return render_template('graphPage.html', result=data)
 
 if __name__ == '__main__':
     app.run(debug=True)
