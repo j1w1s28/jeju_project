@@ -1,0 +1,113 @@
+#chartdiv {
+    width: 800px;
+    height: 400px;
+    background-color: #FFFFFF;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+@-webkit-keyframes am-moving-dashes {
+    100% {
+        stroke-dashoffset: -31px;
+    }
+}
+@keyframes am-moving-dashes {
+    100% {
+        stroke-dashoffset: -31px;
+    }
+}
+
+.lastBullet {
+    -webkit-animation: am-pulsating 1s ease-out infinite;
+    animation: am-pulsating 1s ease-out infinite;
+}
+@-webkit-keyframes am-pulsating {
+    0% {
+        stroke-opacity: 1;
+        stroke-width: 0px;
+    }
+    100% {
+        stroke-opacity: 0;
+        stroke-width: 50px;
+    }
+}
+@keyframes am-pulsating {
+    0% {
+        stroke-opacity: 1;
+        stroke-width: 0px;
+    }
+    100% {
+        stroke-opacity: 0;
+        stroke-width: 50px;
+    }
+}
+
+.amcharts-graph-column-front {
+    -webkit-transition: all 0.3s 0.3s ease-out;
+    transition: all 0.3s 0.3s ease-out;
+}
+.amcharts-graph-column-front:hover {
+    fill: #f6695f;
+    stroke: #f6695f;
+    -webkit-transition: all 0.3s ease-out;
+    transition: all 0.3s ease-out;
+}
+
+.amcharts-graph-g2 {
+    stroke-linejoin: round;
+    stroke-linecap: round;
+    stroke-dasharray: 500%;
+    
+    /* fixes IE prob */
+    /* stroke-dasharray: 0 \0/;
+    stroke-dashoffset: 0 \0/; */
+    /* fixes IE prob */
+
+    -webkit-animation: am-draw 20s;
+    animation: am-draw 5s;
+}
+@-webkit-keyframes am-draw {
+    0% {
+        stroke-dashoffset: 500%;
+    }
+    100% {
+        stroke-dashoffset: 0%;
+    }
+}
+@keyframes am-draw {
+    0% {
+        stroke-dashoffset: 500%;
+    }
+    100% {
+        stroke-dashoffset: 0%;
+    }
+}
+
+/* Button */
+.button-66 {
+    background-color: #f99f99;
+    border-radius: 4px;
+    border: 0;
+    box-shadow: rgba(246, 105, 95, .5) 0 -1px 3px 0 inset,rgba(0,44,97,.1) 0 3px 6px 0;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    font-family: "Space Grotesk",-apple-system,system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 24px;
+    height: 30px;
+    width: 60px;
+    position: relative;
+    text-align: center;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    vertical-align: baseline;
+    transition: all .2s cubic-bezier(.22, .61, .36, 1);
+    margin-bottom: 4px;
+  }
+  
+  .button-66:hover {
+    transform: translateY(-2px);
+  }

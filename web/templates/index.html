@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="{{ url_for('static', filename='/KDU/css/index.css') }}"/>
+        <script>
+            window.onload = function () {
+                document.querySelector('#flight').innerText = 'TRP' + Math.round(Math.random() * 1000);
+                document.querySelector('#gate').innerText = Math.round(Math.random() * 20) + 1;
+
+                var today = new Date();
+                var month = ('0' + (today.getMonth() + 1)).slice(-2);
+                var engMonth = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec.'];
+                var day = ('0' + today.getDate()).slice(-2);
+                var hours = ('0' + today.getHours()).slice(-2);
+                var minutes = ('0' + today.getMinutes()).slice(-2);
+                var dep = hours+':'+minutes+', '+engMonth[Number(month)]+' '+day;
+                document.querySelector('#dep').innerText = dep;
+            };
+        </script>
+        <title>Index</title>
+    </head>
+    <body>
+        <input type="radio" name="choice" id="javascript" checked="checked" /><input type="radio" name="choice" id="typescript" />
+        <div class="scene">
+            <label for="typescript"></label><label for="javascript"></label>
+            <!-- 검은카드 -->
+            <div class="card ticket">
+                <div id="ticket_title" class="card__content">JEJU TRIP</div>
+                <div id="ticket_low">
+                    <div id="ticket_inside">
+                        <div id="ticket_info">
+                            FLIGHT : <span id="flight" style="font-size: 22pt"></span><br />
+                            GATE : <span id="gate" style="font-size: 22pt"></span><br />
+                            DEP : <span id="dep" style="font-size: 22pt"></span>
+                        </div>
+                        <!-- Link Hover -->
+                        <p id="linkHover">
+                            [
+                            <a href="/main">
+                                출발하기
+                                <svg viewBox="0 0 70 36">
+                                    <path d="M6.9739 30.8153H63.0244C65.5269 30.8152 75.5358 -3.68471 35.4998 2.81531C-16.1598 11.2025 0.894099 33.9766 26.9922 34.3153C104.062 35.3153 54.5169 -6.68469 23.489 9.31527" />
+                                </svg>
+                            </a>
+                            ]
+                            <br /><br />
+                            <img style="margin: auto" src="{{ url_for('static', filename='/KDU/images/barcode.svg') }}" alt="barCode"/>
+                        </p>
+                    </div>
+                </div>
+                <footer class="card__footer">
+                    <img src="http://blog.codepen.io/wp-content/uploads/2012/06/Button-White-Small.png" /><span>Cards Against Developers<sub>vol. 2</sub></span>
+                </footer>
+            </div>
+            <!-- 1번카드 -->
+            <div class="card card--answer card--javascript">
+                <div class="card__content">
+                    <p>제주시&#127818;</p>
+                </div>
+                <div class="card_picture">
+                    <div class="card_picture_in">
+                        <img class="card_picture_image" src="{{ url_for('static', filename='/KDU/images/jeju1.png') }}" alt="jejuPic" />
+                    </div>
+                </div>
+                <footer class="card__footer">
+                    <img src="http://blog.codepen.io/wp-content/uploads/2012/06/Button-Black-Small.png" /><span>Cards Against Developers<sub>vol. 2</sub></span>
+                </footer>
+            </div>
+            <!-- 2번카드 -->
+            <div class="card card--answer card--typescript">
+                <div class="card__content">
+                    <p>서귀포시&#127748;</p>
+                </div>
+                <div class="card_picture">
+                    <div class="card_picture_in">
+                        <img class="card_picture_image" src="{{ url_for('static', filename='/KDU/images/jeju2.png') }}" alt="sgpPic" />
+                    </div>
+                </div>
+                <footer class="card__footer">
+                    <img src="http://blog.codepen.io/wp-content/uploads/2012/06/Button-Black-Small.png" /><span>Cards Against Developers<sub>vol. 2</sub></span>
+                </footer>
+            </div>
+        </div>
+    </body>
+</html>

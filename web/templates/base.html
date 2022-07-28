@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <!-- Graph 관련 Link -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="{{ url_for('static', filename='/KDU/css/chart.css') }}" />
+
+        <!-- MAP 관련 Link -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
+        <!-- 경로 추가 하트 버튼 CSS -->
+        <link href="{{ url_for('static', filename='css/map_heart.css') }}" rel="stylesheet" />
+        <!-- 지도 기본 CSS -->
+        <link href="{{ url_for('static', filename='css/map.css') }}" rel="stylesheet" />
+
+        <!-- ONLOAD -->
+        <script>
+            var monthChecker = [];
+            //막대그래프 id부여함수
+            function columnGetID() {
+                monthChecker = [];
+                setTimeout(() => {
+                    let monthList = document.getElementsByClassName('amcharts-graph-column amcharts-graph-g1');
+                    for (let i = 1; i < monthList.length - 2; i++) {
+                        month = monthList[i].ariaLabel;
+                        //정규식으로 다듬기
+                        month = /\d+월, \d{4}/.exec(month)[0];
+                        month = month.split('월, ');
+                        if (month[0].length === 1) {
+                            month[0] = 0 + month[0];
+                        }
+                        //ID 부여
+                        monthChecker.push(month[1] + month[0]);
+                        monthList[i].id = 'm' + month[1] + month[0];
+                    }
+                    for (let i of monthChecker) {
+                        document.querySelector('#m' + i).addEventListener('click', function () {
+                            document.querySelector(PressdBtnID).disabled = false;
+                            MonthchartLoading(MonthData[i]);
+                        });
+                    }
+                }, 1000);
+            }
+
+            // ONLOAD 함수
+            window.onload = function () {
+                // 막대그래프 ID부여
+                columnGetID();
+                // 헤더 체커
+                setTimeout(() => {
+                    document.querySelector('#tab-01').checked = true;
+                }, 100);
+            };
+        </script>
+        <title>Main</title>
+    </head>
+    <body>
+        {% include 'header.html' %}
+
+        <div id="baseDiv">{% block mapList %} {% endblock %}</div>
+
+        <!-- 화면 프레임 맞춤용 스크립트 -->
+        <script src="{{ url_for('static', filename='/KDU/JS/divChanger.js') }}"></script>
+        <script>
+            window.addEventListener('resize', function () {
+                mapChanger(1400);
+            });
+            mapChanger(1400);
+
+            // 헤더 높이 맞추기 스크립트
+            document.querySelector('#baseDiv').style.marginTop = document.querySelector('#header').clientHeight + 'px';
+        </script>
+
+        {% include 'footer.html' %}
+    </body>
+</html>

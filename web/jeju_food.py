@@ -1,17 +1,24 @@
 from flask import Flask, request, render_template, jsonify
 import pandas as pd
+import jeju_db
 
 app = Flask(__name__)
 
-def food_map():
-    data = pd.read_csv('./data/jeju_food_modified.csv').T.to_dict()
-    data = (data, len(data))
-    return data
+def db_data():
+    sql = "select* from (select * from jeju_data where longitude != 'None' or latitude != 'None' order by rand() limit 50) A order by A.title"
+    data = jeju_db.db_connect(sql)
+    data = pd.DataFrame(data).T.to_dict()
+    return (data, len(data))
+
 
 @app.route('/')
 def home():
-    data = food_map()
-    return render_template('jeju_food.html', result=data)
+    return render_template('index.html')
+
+@app.route('/main')
+def mapList():
+    data = db_data()
+    return render_template('graphPage.html', result=data)
 
 if __name__ == '__main__':
     app.run(debug=True)
