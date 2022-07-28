@@ -1,0 +1,46 @@
+{% extends 'map_list.html' %}
+{% block graph %}
+<script src="{{ url_for('static', filename='/KDU/JS/amcharts.js') }}"></script>
+<script src="https://www.amcharts.com/lib/3/serial.js?x"></script>
+<!-- Main DIV -->
+<div style="width: 800px; margin: 10px auto 300px;">
+    <div>
+        <span style="font-size: 18pt; font-weight: bold; display: block; margin-bottom: 10px">기간별 관광객 추이</span>
+        <button id="btn2018" class="button-66" role="button" onclick="chartLoading(chartData[0]);">2018</button>
+        <button id="btn2019" class="button-66" role="button" onclick="chartLoading(chartData[1]);">2019</button>
+        <button id="btn2020" class="button-66" role="button" onclick="chartLoading(chartData[2]);">2020</button>
+        <button id="btn2021" class="button-66" role="button" onclick="chartLoading(chartData[3]);">2021</button>
+        <button id="btn2022" class="button-66" role="button" onclick="chartLoading(chartData[4]);">2022</button>
+    </div>
+    <!-- 차트 DIV -->
+    <div id="chartdiv"></div>
+</div>
+<script src="{{ url_for('static', filename='/KDU/JS/chart.js') }}"></script>
+
+<script>
+    // 년도 Button SCRIPT
+    var PressdBtnID = '#btn2022';
+    function checked(btnID) {
+        document.querySelector(btnID).style.backgroundColor = '#f6695f';
+        document.querySelector(btnID).style.transform = 'translateY(-2px)';
+        document.querySelector(btnID).disabled = true;
+    }
+    function unchecked(btnID) {
+        document.querySelector(btnID).style.backgroundColor = '#f99f99';
+        document.querySelector(btnID).style.transform = '';
+        document.querySelector(btnID).disabled = false;
+    }
+
+    btnList = ['#btn2018', '#btn2019', '#btn2020', '#btn2021', '#btn2022'];
+    for (let btnID of btnList) {
+        document.querySelector(btnID).addEventListener('click', function () {
+            unchecked(PressdBtnID);
+            PressdBtnID = btnID;
+            checked(btnID);
+            columnGetID();
+        });
+    }
+
+    checked(PressdBtnID);
+</script>
+{% endblock %}
