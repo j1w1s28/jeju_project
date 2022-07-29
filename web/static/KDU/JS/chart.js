@@ -15,7 +15,7 @@ var chartData = [];
 $.ajax({
     url: 'static/KDU/data/visitors_data.csv',
     success: function (data) {
-        var data = data.split('\r\n');
+        var data = data.split('\n');
         var check = data[1].split('-')[0];
         var YearPackage = [];
 
@@ -48,7 +48,7 @@ var MonthData = {};
 $.ajax({
     url: 'static/KDU/data/visitors_Daily_data.csv',
     success: function (data) {
-        var data = data.split('\r\n');
+        var data = data.split('\n');
         var check = data[1].substr(0, 6);
         var MonthPackage = [];
 
