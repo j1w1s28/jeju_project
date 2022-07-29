@@ -19,7 +19,7 @@ def home():
 def mapList():
     data = db_data()
     data.append(request.args.get('pos'))
-    return render_template('graphPage.html', result=data)
+    return render_template('weather.html', result=data)
 
 if __name__ == '__main__':
     app.run(debug=True)

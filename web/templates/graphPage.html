@@ -3,7 +3,14 @@
 <script src="{{ url_for('static', filename='/KDU/JS/amcharts.js') }}"></script>
 <script src="https://www.amcharts.com/lib/3/serial.js?x"></script>
 <!-- Main DIV -->
-<div style="width: 800px; margin: 10px auto 300px;">
+<div style="width: 1150px; margin: 10px auto 300px;">
+    <div style="position: absolute; margin-left: 830px;">
+        <span style="font-size: 18pt; font-weight: bold; display: block; margin-bottom: 44px">오늘의 제주 날씨</span>
+    </div>
+    <div style="width: 340px; height: 400px; position: absolute; margin: 60px 0 0 810px;">
+        {% block weather %}
+        {% endblock %}
+    </div>
     <div>
         <span style="font-size: 18pt; font-weight: bold; display: block; margin-bottom: 10px">기간별 관광객 추이</span>
         <button id="btn2018" class="button-66" role="button" onclick="chartLoading(chartData[0]);">2018</button>
@@ -13,7 +20,7 @@
         <button id="btn2022" class="button-66" role="button" onclick="chartLoading(chartData[4]);">2022</button>
     </div>
     <!-- 차트 DIV -->
-    <div id="chartdiv"></div>
+    <div id="chartdiv" style="margin-right: 10px;"></div>
 </div>
 <script src="{{ url_for('static', filename='/KDU/JS/chart.js') }}"></script>
 
