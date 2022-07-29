@@ -5,7 +5,7 @@ import pandas as pd
 import json
 import jeju_db
 
-app = Flask(__name__)
+app = Flask(__name__) 
 
 def map():
     sql = "select * from jeju_data limit 5 "

@@ -18,7 +18,7 @@ def map():
 @app.route('/')
 def home():
     data = map()
-    return render_template('jeju_line.html',result=data)
+    return render_template('cookie.html',result=data)
 
 if __name__ == '__main__':
     app.run(debug = True)
