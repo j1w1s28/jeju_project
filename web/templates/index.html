@@ -4,9 +4,10 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="stylesheet" href="{{ url_for('static', filename='/KDU/css/index.css') }}"/>
+        <link rel="stylesheet" href="{{ url_for('static', filename='/KDU/css/index.css') }}" />
         <script>
             window.onload = function () {
+                // 비행기표 텍스트 지정
                 document.querySelector('#flight').innerText = 'TRP' + Math.round(Math.random() * 1000);
                 document.querySelector('#gate').innerText = Math.round(Math.random() * 20) + 1;
 
@@ -16,7 +17,7 @@
                 var day = ('0' + today.getDate()).slice(-2);
                 var hours = ('0' + today.getHours()).slice(-2);
                 var minutes = ('0' + today.getMinutes()).slice(-2);
-                var dep = hours+':'+minutes+', '+engMonth[Number(month)]+' '+day;
+                var dep = hours + ':' + minutes + ', ' + engMonth[Number(month)] + ' ' + day;
                 document.querySelector('#dep').innerText = dep;
             };
         </script>
@@ -25,7 +26,18 @@
     <body>
         <input type="radio" name="choice" id="javascript" checked="checked" /><input type="radio" name="choice" id="typescript" />
         <div class="scene">
-            <label for="typescript"></label><label for="javascript"></label>
+            <label for="typescript" onclick="seo();"></label><label for="javascript" onclick="jeju();"></label>
+            <!-- 위치선택시 값설정 -->
+            <script>
+                var picked = 'je';
+                function jeju() {
+                    picked = 'je';
+                }
+                function seo() {
+                    picked = 'se';
+                }
+            </script>
+
             <!-- 검은카드 -->
             <div class="card ticket">
                 <div id="ticket_title" class="card__content">JEJU TRIP</div>
@@ -39,7 +51,7 @@
                         <!-- Link Hover -->
                         <p id="linkHover">
                             [
-                            <a href="/main">
+                            <a href="#" onclick="letsGo();">
                                 출발하기
                                 <svg viewBox="0 0 70 36">
                                     <path d="M6.9739 30.8153H63.0244C65.5269 30.8152 75.5358 -3.68471 35.4998 2.81531C-16.1598 11.2025 0.894099 33.9766 26.9922 34.3153C104.062 35.3153 54.5169 -6.68469 23.489 9.31527" />
@@ -47,8 +59,15 @@
                             </a>
                             ]
                             <br /><br />
-                            <img style="margin: auto" src="{{ url_for('static', filename='/KDU/images/barcode.svg') }}" alt="barCode"/>
+                            <img style="margin: auto" src="{{ url_for('static', filename='/KDU/images/barcode.svg') }}" alt="barCode" />
                         </p>
+
+                        <!-- 출발하기 버튼 파라미터값 주기 -->
+                        <script>
+                            function letsGo() {
+                                location.href = '/main?pos='+picked;
+                            }
+                        </script>
                     </div>
                 </div>
                 <footer class="card__footer">

@@ -16,6 +16,12 @@
         <!-- 지도 기본 CSS -->
         <link href="{{ url_for('static', filename='css/map.css') }}" rel="stylesheet" />
 
+        <!-- weather 관련 -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/snap.svg/0.4.1/snap.svg-min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/TweenMax.min.js"></script>
+        <link rel="stylesheet" href="{{ url_for('static', filename='KDU/css/weather.css') }}">
+
         <!-- ONLOAD -->
         <script>
             var monthChecker = [];
@@ -47,6 +53,8 @@
 
             // ONLOAD 함수
             window.onload = function () {
+                //새로고침시 맨위로
+                history.scrollRestoration = "manual"
                 // 막대그래프 ID부여
                 columnGetID();
                 // 헤더 체커

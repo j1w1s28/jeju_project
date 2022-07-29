@@ -8,7 +8,7 @@ def db_data():
     sql = "select* from (select * from jeju_data where longitude != 'None' or latitude != 'None' order by rand() limit 50) A order by A.title"
     data = jeju_db.db_connect(sql)
     data = pd.DataFrame(data).T.to_dict()
-    return (data, len(data))
+    return [data, len(data)]
 
 
 @app.route('/')
@@ -18,7 +18,8 @@ def home():
 @app.route('/main')
 def mapList():
     data = db_data()
-    return render_template('graphPage.html', result=data)
+    data.append(request.args.get('pos'))
+    return render_template('weather.html', result=data)
 
 if __name__ == '__main__':
     app.run(debug=True)
