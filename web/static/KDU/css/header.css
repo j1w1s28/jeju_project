@@ -156,7 +156,11 @@ background: radial-gradient(circle, #63f1ea 0%, #9df1ed 100%);
 
 body {
     margin: 0;
-    background: #e8ebf3;
+    /* background: #e8ebf3; */
+    background-image: linear-gradient(
+        rgba(255, 255, 255, 0.2),
+        rgba(255, 255, 255, 0.2)
+      ), url('../images/bgImage.avif');
     height: 100vh;
     display: flex;
     flex-direction: column;

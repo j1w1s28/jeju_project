@@ -50,7 +50,7 @@ var clouds = [{ group: Snap.select('#cloud1') }, { group: Snap.select('#cloud2')
 
 var weather = [
     { type: 'snow', name: '눈' },
-    { type: 'wind', name: '구름많음' },
+    { type: 'wind', name: '구름' },
     { type: 'rain', name: '비' },
     { type: 'thunder', name: '뇌우' },
     { type: 'sun', name: '맑음' },
@@ -565,7 +565,7 @@ function changeWeather(weather) {
 // 온도, 날씨관련 AJAX
 var weatherData;
 $.ajax({
-    url: 'https://api.openweathermap.org/data/2.5/weather?lat=33.5104135&lon=126.49135348&appid=a7e8689c16bddca198ae1d762f5049cd',
+    url: 'https://api.openweathermap.org/data/2.5/weather?lat=33.5104135&lon=126.4913534&appid=a7e8689c16bddca198ae1d762f5049cd',
     async: false,
     success: function (data) {
         weatherData = data.weather[0].id;
@@ -583,7 +583,7 @@ function weatherCheck(wd) {
     else if (wd >= 600 && wd <= 622) changeWeather(weather[0]);
     // 맑음
     else if (wd == 800) changeWeather(weather[4]);
-    // 구름많음
+    // 구름
     else if (wd >= 701 && wd <= 804) changeWeather(weather[1]);
 }
 
