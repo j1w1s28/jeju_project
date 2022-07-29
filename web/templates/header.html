@@ -5,11 +5,11 @@
         <!-- 헤더 기본 탭 -->
         <header id="header">
             <div id="logo">
-                <a href="/" style="font-size: 30pt; font-weight: bold; font-family: ulsanjunggu; text-decoration: none; color: #000;">놀당 갑서</a>
+                <a href="/" style="font-size: 30pt; font-weight: bold; font-family: ulsanjunggu; text-decoration: none; color: #000;">놀당갑서🍊</a>
             </div>
             <div class="tabs">
                 <!-- TAB 1 -->
-                <input type="radio" name="tab" id="tab-01" />
+                <input type="radio" name="tab" id="tab-01" disabled/>
                 <label for="tab-01">
                     <div class="icon" onclick="mapClick();">
                         <span class="detail"></span>
@@ -18,7 +18,7 @@
                     </div>
                 </label>
                 <!-- TAB 2 -->
-                <input type="radio" name="tab" id="tab-02" />
+                <input type="radio" name="tab" id="tab-02" disabled/>
                 <label for="tab-02">
                     <div class="icon" onclick="graphClick();">
                         <span class="detail"></span>
@@ -67,6 +67,18 @@
             function graphClick() {
                 window.scrollTo(0, 900);
             }
+            // 스크롤링 위치에 따라 상단 탭 변경
+            var mapBtn = document.querySelector('#tab-01');
+            var graphBtn = document.querySelector('#tab-02');
+            window.addEventListener('scroll', function() {
+                if(window.pageYOffset >= 700) {
+                    graphBtn.checked = true;
+                    mapBtn.checked = false;
+                } else {
+                    graphBtn.checked = false;
+                    mapBtn.checked = true;
+                }
+            })
         </script>
     </body>
 </html>
