@@ -1,0 +1,474 @@
+{% extends 'base.html' %}
+{% block mapList %}
+<div style="padding: 0; margin: 0 auto 300px;">
+    <span style="font-size: 18pt; font-weight: bold; display: block; margin-bottom: 10px">스마트 파인더</span>
+    <!-- 모달창 -->
+    <!-- <div class="modal">
+    <div class="modal_text">
+        <p class="modal_p">제주도</p>
+        <span class="modal_span">정상적으로 처리되었습니다.</span>
+    </div>
+    <div class="modal_x">닫기</div>
+    </div> -->
+    <!-- 백그라운드 -->
+    <!-- <div class="modal_back"></div> -->
+    
+    <!-- 장소명 테이블 -->
+    <div class="scrollBar" style="overflow-x: hidden; overflow-y: scroll; height: 630px; width: 390px; background-color: #fff; border-radius: 10px; position: absolute">
+        <div class="about_text">
+            <table class="table table-hover">
+                <tbody id="jeju_list" style="border-radius: 10px"></tbody>
+            </table>
+            <script>
+                // 오른쪽 선택된 장소 추가 함수
+                function addSelected(add_list){
+                    for (var key in add_list) {
+                            var selected =  '<div class="col-2" style="margin-top:10px;margin-bottom:5px"><img src="{{ url_for("static", filename="img/circle2.png")}}" height=25 width="25"></div>'+
+                                            '<div class="col" style="width: 180; margin-top:10px;margin-bottom:5px;word-break:keep-all;"><b>'+key+'</b></div>'+
+                                            '<div class="w-100"></div>'+
+                                            '<div class="col-2" style="margin-top:5px;margin-bottom:5px"><img src="{{ url_for("static", filename="img/minus2.png")}}" height=100% width="25"></div>'+
+                                            '<div class="col" style="font-size:13px; margin-top:5px; margin-bottom:5px; width: 180px; table-layout:fixed;">'+add_list[key]+'<br></div>'+
+                                            '<div class="w-100"></div>'
+
+                            document.querySelector('#selected_title').innerHTML += selected
+                        }
+                }
+                
+                // 리스트에서 하트 클릭시 함수
+                var add_list = [];
+                var linePath = [];
+                var idChecker = [];
+                var tmpPoly;
+
+                function addBtn(click_id) {
+                    var title = document.querySelector("#"+click_id).value.trim()
+                    var tag = positions[click_id.split('_')[1]].tag.split(',').slice(0,5)
+                    document.querySelector('#selected_title').innerHTML = ''
+                    // 선 지우기
+                    if(tmpPoly != undefined) {
+                        tmpPoly.setMap(null);
+                    }
+
+                    // 버튼 상태 변경
+                    if(document.querySelector("#"+click_id).checked) {
+                        document.querySelector("#"+click_id).checked = true;
+                        if(document.querySelector("#Info"+click_id)!=null){
+                            document.querySelector("#Info"+click_id).checked = true;
+                        }
+                        add_list[title] = tag;
+
+                        // 추가시 위도 경도
+                        x = positions[click_id.split('_')[1]].latlng.Ma;
+                        y = positions[click_id.split('_')[1]].latlng.La;
+                        linePath.push(new kakao.maps.LatLng(x, y));
+                        idChecker.push(click_id);
+                    }
+                    else {
+                        document.querySelector("#"+click_id).checked = false;
+                        if(document.querySelector("#Info"+click_id)!=null){
+                            document.querySelector("#Info"+click_id).checked = false;
+                        }
+                        delete add_list[title];
+                        let index = idChecker.indexOf(click_id);
+                        // 추가 취소 시 배열에서 빼기
+                        linePath.splice(index, 1);
+                        idChecker.splice(index, 1);
+                    }
+
+                    //선 표시
+                    var polyline = new kakao.maps.Polyline({
+                                    path: linePath, // 선을 구성하는 좌표배열 입니다
+                                    strokeWeight: 2, // 선의 두께 입니다
+                                    strokeColor: '#1478FF', // 선의 색깔입니다
+                                    strokeOpacity: 0.7, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+                                    strokeStyle: 'solid' // 선의 스타일입니다
+                                });
+                    tmpPoly = polyline;
+                    polyline.setMap(map);
+
+                    addSelected(add_list);
+
+
+                }
+
+                // 인포창에서 하트 클릭시 함수
+                function addInfoBtn(Info_click_id){
+                    click_id = Info_click_id.replace("Info","")
+                    if(document.querySelector("#"+Info_click_id).checked) {
+                        document.querySelector("#"+click_id).checked=true;
+                    }
+                    else {
+                        document.querySelector("#"+click_id).checked=false;
+                    }
+                    addBtn(click_id);
+                }
+            </script>
+        </div>
+    </div>
+	
+    <!-- 지도 -->
+    <div>
+        <div id="map" style="width: 690px; height: 630px; border-radius: 10px; position: absolute; margin-left: 400px">
+            <!-- 지도 위에 표시될 마커 카테고리 -->
+            <div class="category btn-group opacity-85" role="group" aria-label="Basic checkbox toggle button group">
+                <input type="checkbox" class="btn-check" id="category1" autocomplete="off" value="음식점" onclick="clickCategory()" />
+                <label class="btn btn-outline-danger" for="category1">🍔<br />음식점</label>
+
+                <input type="checkbox" class="btn-check" id="category2" autocomplete="off" value="관광지" onclick="clickCategory()" checked />
+                <label class="btn btn-outline-warning" for="category2">🎡<br />관광지</label>
+
+                <input type="checkbox" class="btn-check" id="category3" autocomplete="off" value="숙박" onclick="clickCategory()" checked />
+                <label class="btn btn-outline-primary" for="category3">🏠<br />숙박</label>
+            </div>
+            <!-- 지도 지역 구분 -->
+            <div class="input-group mb-3" style="z-index: 2; top: 10px; width: 120px; left: 562px;">
+                <select class="form-select" name="order_status" id="inputGroupSelect01">
+                  <option value="제주도">🏝제주도</option>
+                  <option value="제주시" id="status1">🍊제주시</option>
+                  <option value="서귀포시" id="status2">&#127748;서귀포시</option>
+                </select>
+            </div>
+            <script>
+                if(('{{result[2]}}' == 'je')){
+                    document.querySelector('#status1').selected=true
+                }
+                else {
+                    document.querySelector('#status2').selected=true
+                }
+            </script>
+         </div>
+   
+        <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e60591e1e917a164c421ab8844f09e08"></script>
+       
+        <script>
+            var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+                mapOption = {
+                    center: new kakao.maps.LatLng(33.375, 126.55), // 한라산 좌표
+                    level: 10, // 지도의 확대 레벨
+                };
+
+            var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+            // map.setMaxLevel(10);
+            // map.setBounds((33.27468472204246, 125.97603087677453), (34.04423387381139, 127.39200174133641)); // 지도 이동 범위 제한
+
+            // 일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성합니다
+            // var mapTypeControl = new kakao.maps.MapTypeControl();
+            // map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
+
+            // 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
+            // var zoomControl = new kakao.maps.ZoomControl();
+            // map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+
+            // 마커를 표시할 위치와 title 객체 배열
+            var food = [];
+            var stay = [];
+            var place = [];
+            ('{% for i in range(result[1]) %}');
+            x = Number('{{result[0][i]["latitude"]}}');
+            y = Number('{{result[0][i]["longitude"]}}');
+            tmp = {
+                id: '{{i}}',
+                title: '{{result[0][i]["title"]}}',
+                tag: '{{result[0][i]["alltag"]}}',
+                address: '{{result[0][i]["address"]}}',
+                roadaddress: '{{result[0][i]["roadaddress"]}}',
+                phoneno: '{{result[0][i]["phoneno"]}}',
+                content: '{{result[0][i]["contentscd"]}}',
+                img_thumb: '{{result[0][i]["thumbnailpath"]}}',
+                latlng: new kakao.maps.LatLng(x, y),
+            };
+            ('{% if(result[0][i]["contentscd"] == "음식점") %}');
+            food.push(tmp);
+            ('{% elif(result[0][i]["contentscd"] == "숙박") %}');
+            stay.push(tmp);
+            ('{% else  %}');
+            place.push(tmp);
+            ('{% endif %}');
+            ('{% endfor %}');
+
+            // 카테고리 버튼 클릭 함수 =======================================================================================
+            var positions = [];
+            var checker = [];
+            function clickCategory() {
+                positions = [];
+                delLocation(checker);
+                if (document.querySelector('#category1').checked) {
+                    positions = positions.concat(food);
+                }
+                if (document.querySelector('#category2').checked) {
+                    positions = positions.concat(place);
+                }
+                if (document.querySelector('#category3').checked) {
+                    positions = positions.concat(stay);
+                }
+                createMarker();
+
+                // 왼쪽 리스트 추가
+                document.querySelector('#jeju_list').innerHTML = '';
+                for (var i = 0; i < positions.length; i++) {
+                    var jejuList =
+                        '<tr>' +
+                        '<td><a onclick="openwindow(markers['+i+'], infowindows['+i+'],'+i+')">'+
+                        '<img src="'+positions[i]['img_thumb']+'" height="63" width="65" style="border-radius: 50px;"></a></td>' +
+                        '<td style="vertical-align:middle; word-break:break-all; width: 226px; table-layout:fixed; ">'+
+                        '<a onclick="openwindow(markers['+i+'], infowindows['+i+'],'+i+')">'+positions[i]['title']+'</a></td>' +
+                        '<td style="vertical-align:middle; padding-right: 0px;">' +
+                        '<label class="heart-switch">' +
+                        '<input type="checkbox" id="btnId_'+i+'" onClick="addBtn(this.id)" value="'+positions[i]['title'] +'"'+(positions[i]['title'] in add_list ? 'checked' : '')+'>' +
+                        '<svg viewBox="0 0 33 23" fill="white">' +
+                        '<path d="M23.5,0.5 C28.4705627,0.5 32.5,4.52943725 32.5,9.5 C32.5,16.9484448 21.46672,22.5 16.5,22.5 C11.53328,22.5 0.5,16.9484448 0.5,9.5 C0.5,4.52952206 4.52943725,0.5 9.5,0.5 C12.3277083,0.5 14.8508336,1.80407476 16.5007741,3.84362242 C18.1491664,1.80407476 20.6722917,0.5 23.5,0.5 Z"></path>' +
+                        '</svg>' +
+                        '</label>' +
+                        '</td>'+
+                        '<td><a class="btnM" data-toggle="modal" onclick="modalOpen(\'modal_'+i+'\');">🔍</a>'+
+                        ( positions[i].content ==='숙박'
+                        ?'<div class="modal" id="modal_'+i+'">'+
+                        '<div class="modal_text">'+
+                        '<p class="modal_t">'+positions[i].title+'</p>'+
+                        '<div class="modal_img"><img src="'+positions[i]['img_thumb']+'" height="150" width="220" style="border-radius: 20px;"></div><br>'+
+                        '<span class="modal_span">'+positions[i].address+'</span><br>'+
+                        '<span class="modal_span">'+positions[i].phoneno+'</span><br>'+
+                        '<span class="modal_span">'+'체크인'+'</span><br></div>'+
+                        '<div class="modal_info">'+'등급/부대시설/정보'+'</div>'+
+                        '<div class="modal_x">닫기</div></div>'
+                        :( positions[i].content === '음식점'
+                        ?'<div class="modal" id="modal_'+i+'">'+
+                        '<div class="modal_text">'+
+                        '<p class="modal_t">'+positions[i].title+'</p>'+
+                        '<div class="modal_img"><img src="'+positions[i]['img_thumb']+'" margin-left="10px;" height="150" width="220" style="border-radius: 20px;"></div><br>'+
+                        '<span class="modal_span">'+positions[i].address+'</span><br>'+
+                        '<span class="modal_span">'+positions[i].phoneno+'</span><br>'+
+                        '<span class="modal_span">'+'운영시간'+'</span><br></div>'+
+                        '<div class="modal_info">'+'메뉴/정보'+'</div>'+
+                        '<div class="modal_x">닫기</div></div>'
+                        :'<div class="modal" id="modal_'+i+'">'+
+                        '<div class="modal_text">'+
+                        '<p class="modal_t">'+positions[i].title+'</p>'+
+                        '<div class="modal_img"><img src="'+positions[i]['img_thumb']+'" margin-left="10px;" height="150" width="220" style="border-radius: 20px;"></div><br>'+
+                        '<span class="modal_span">'+positions[i].address+'</span><br>'+
+                        '<span class="modal_span">'+positions[i].phoneno+'</span><br>'+
+                        '<span class="modal_span">'+'운영시간'+'</span><br></div>'+
+                        '<div class="modal_info">'+'입장료/정보'+'</div>'+
+                        '<div class="modal_x">닫기</div></div>')
+                        )
+                        '</td>'+           
+                        '</tr>';
+                    // console.log(positions[i])
+                    document.querySelector('#jeju_list').innerHTML += jejuList;
+                }
+                
+
+            }
+            
+            // =======================================================================================
+
+            // 마커 삭제 함수
+            function delLocation(Loc) {
+                for (let i = 0; i < Loc.length; i++) {
+                    Loc[i].setMap(null);
+                }
+            }
+
+            // 마커 이미지의 이미지 주소
+            var imageSrc_s = 'https://cdn-icons-png.flaticon.com/512/727/727590.png'; //숙소
+            var imageSrc_f = 'https://cdn-icons-png.flaticon.com/512/4108/4108022.png'; //음식
+            var imageSrc_p = 'https://cdn-icons-png.flaticon.com/512/727/727606.png'; //관광지
+
+            // 마커 이미지의 이미지 크기
+            var imageSize = new kakao.maps.Size(24, 25);
+            var infowindows = [];
+            var markers = [];
+
+            function createMarker() {
+                infowindows = [];
+                markers = [];
+
+                // 마커 생성
+                for (var i = 0; i < positions.length; i++) {
+                    // 마커 이미지를 생성
+                    if (positions[i].content === '숙박') {
+                        var markerImage = new kakao.maps.MarkerImage(imageSrc_s, imageSize);
+                    } else if (positions[i].content === '음식점') {
+                        var markerImage = new kakao.maps.MarkerImage(imageSrc_f, imageSize);
+                    } else {
+                        var markerImage = new kakao.maps.MarkerImage(imageSrc_p, imageSize);
+                    }
+
+                    var marker = new kakao.maps.Marker({
+                        map: map, // 마커를 표시할 지도
+                        position: positions[i].latlng, // 마커를 표시할 위치
+                        image: markerImage, // 마커 이미지
+                        clickable: true,
+                    });
+                    markers.push(marker);
+                    checker.push(marker);
+
+                    var contents =
+                        '<div class="wrap">' +
+                        '<div class="info"">' +
+                        '<div class="title" id="info_' +
+                        i +
+                        '"><div style="position: absolute; height: 17px; "><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png" style="padding-bottom: 3px; margin-left:280px" onclick="infoClose();"></div>' +
+                        positions[i].title +
+                        '</div>' +
+                        '<div class="body">' +
+                        // '<div class="img">' + '<img src='+ positions[i].img + 'width="73" height="70">'+'</div>' +
+                        '<div class="desc">' +
+                        '<div class="address">' +
+                        positions[i].roadaddress.replace(/"/g, '') +
+                        '</div>' +
+                        '<div class="phoneno">' +
+                        positions[i].phoneno.replace(/"/g, '') +
+                        '</div>' +
+                        '<div class="phoneno">' +
+                        '<label class="heart-switch">' +
+                        '<input type="checkbox" id="InfobtnId_' +
+                        i +
+                        '" onClick="addInfoBtn(this.id)"' +
+                        (positions[i]['title'] in add_list ? 'checked' : '') +
+                        '>' +
+                        '<svg viewBox="0 0 33 23" fill="white">' +
+                        '<path d="M23.5,0.5 C28.4705627,0.5 32.5,4.52943725 32.5,9.5 C32.5,16.9484448 21.46672,22.5 16.5,22.5 C11.53328,22.5 0.5,16.9484448 0.5,9.5 C0.5,4.52952206 4.52943725,0.5 9.5,0.5 C12.3277083,0.5 14.8508336,1.80407476 16.5007741,3.84362242 C18.1491664,1.80407476 20.6722917,0.5 23.5,0.5 Z"></path>' +
+                        '</svg>' +
+                        '</label>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>';
+
+                    // 인포윈도우를 생성합니다
+                    var infowindow = new kakao.maps.InfoWindow({
+                        content: contents,
+                    });
+                    infowindows.push(infowindow);
+
+                    // 마커 클릭하면 인포윈도우
+                    kakao.maps.event.addListener(marker, 'click', makeClickListener(map, marker, infowindow, i));
+                }
+            }
+
+            function infoClose() {
+                infowindows[windowChecker].close(map, markers[windowChecker]);
+                circle.setMap(null);
+            }
+
+            document.getElementById('category1').click();
+            // document.getElementById('category2').click();
+            // document.getElementById('category3').click();
+
+            function infoColor(i, map, marker) {
+                // 카테고리에 따른 팝업 색 변경
+                if (positions[i].content == '숙박') {
+                    document.querySelector('#info_' + i).style.background = '#57A8EB';
+                } else if (positions[i].content == '음식점') {
+                    document.querySelector('#info_' + i).style.background = '#fc868a';
+                } else {
+                    document.querySelector('#info_' + i).style.background = '#facf4c';
+                }
+            }
+
+            // 마커 클릭 이벤트 //
+            windowChecker = undefined;
+            var circle = new kakao.maps.Circle({});
+            function makeClickListener(map, marker, infowindow, i) {
+                return function () {
+                    var moveLatLon = positions[i].latlng;
+                    moveAndCircle(moveLatLon);
+
+                    // 정보 팝업
+                    if (windowChecker != undefined) {
+                        infowindows[windowChecker].close(map, markers[windowChecker]);
+                    }
+                    infowindow.open(map, marker);
+                    infoColor(i, map, marker);
+                    windowChecker = i;
+                };
+            }
+
+            function openwindow(marker, infowindow, i) {
+                // 이동할 위도 경도 위치 생성
+                var moveLatLon = positions[i].latlng;
+                moveAndCircle(moveLatLon);
+
+                if (windowChecker != undefined) {
+                    infowindows[windowChecker].close(map, markers[windowChecker]);
+                }
+                infowindow.open(map, marker);
+                infoColor(i);
+                windowChecker = i;
+            }
+
+            function moveAndCircle(moveLatLon) {
+                // 지도 이동
+                map.setCenter(moveLatLon);
+                // map.panTo(moveLatLon);
+
+                // 지도 확대
+                map.setLevel(7);
+                // 지도에 표시할 원을 생성, 표시
+                circle.setMap(null); // 기존 원 초기화
+                circle = new kakao.maps.Circle({
+                    center: moveLatLon, // 원의 중심좌표 입니다
+                    radius: 5000, // 미터 단위의 원의 반지름입니다
+                    strokeWeight: 1, // 선의 두께입니다
+                    strokeColor: '#75B8FA', // 선의 색깔입니다
+                    strokeOpacity: 0.5, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+                    fillColor: '#CFE7FF', // 채우기 색깔입니다
+                    fillOpacity: 0.5, // 채우기 불투명도 입니다
+                });
+                circle.setMap(map);
+            }
+        </script>
+    </div>
+
+    <!-- 선택 장소 div -->
+    <div style="width: 300px; height: 630px; margin-left: 1100px">
+        <div class="scrollBar" style="width: 100%; overflow-x: hidden; overflow-y: scroll; height: 580px; padding: 5px; background-color: #fff; border-radius: 10px">
+            <div class="row" id="selected_title"></div>
+        </div>
+        <div class="d-grid gap-2" style="margin-top: 10px; padding-right: 10px">
+            <button class="btn btn-primary" type="button" onclick="reset()">초기화</button>
+            <script>
+                function reset() {
+                    if (window.confirm(     '초기화 하시겠습니까?')) {
+                        window.location.reload(); // 새로고침
+                    }
+                }
+            </script>
+        </div>
+    </div>
+</div>
+<script>
+    function modalOpen(id) {
+        id = '#'+id;
+        $(id).addClass("modal_on");
+        $(".modal_back").addClass("back_on");
+    }
+    function modalCenter(){
+            var modal_w = $(".modal").width()/2;
+            $(".modal").css("margin-left", -modal_w);
+            var modal_h = $(".modal").height()/2;
+            $(".modal").css("margin-top", -modal_h);
+        }
+        modalCenter();
+        $(window).resize(function(){
+            modalCenter();
+        });
+        function modalOff(){
+            $(".modal").removeClass("modal_on");
+            $(".modal_back").removeClass("back_on");
+            $("body").removeClass("body_lock");
+        }
+        $(".modal_x").click(function(id){
+            modalOff();
+        });
+        $(".modal_back").click(function(id){
+            modalOff();
+        });
+</script>
+<!-- Graph공간 -->
+{% block graph %}
+{% endblock %}
+
+{% endblock %}

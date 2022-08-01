@@ -68,3 +68,90 @@
     .scrollBar::-webkit-scrollbar-track {
         background: rgba(33, 122, 244, .1);  /*스크롤바 뒷 배경 색상*/
     }
+
+    .btnM {
+        width: 150px;
+        height: 55px;
+        /* background-color: #ffffff; */
+        text-decoration: none;
+        text-align: center;
+        line-height: 55px;
+        color: #fff;
+        cursor: pointer;
+    }
+    .modal {
+        position: fixed;
+        top: 40%;
+        left: 50%;
+        width: 700px;
+        bottom: 200%;
+        height: 400px;
+        background-color: rgb(255, 255, 255);
+        z-index: 99;
+        display: none;
+    }
+    .modal_on {
+        display: block;
+    }
+    .modal_text {
+        padding: 16px;
+        text-align: center;
+        font-weight: bold;
+    }
+    .modal_t {
+        font-size: 20px;
+        margin-bottom: 0px;
+    }
+    .modal_img {
+        margin-left: 15px;
+        float: left;
+    }
+    .modal_span {
+        text-align: left;
+        color: rgb(15, 15, 15);
+        font-weight: 300;
+    }
+    .modal_info{
+        margin-top: 40px;
+        text-align: center;
+        color: #000;
+    }
+    .modal_x {
+        width: 120px;
+        height: 45px;
+        margin: auto;
+        margin-top:10px;
+        background-color: #559bfa;
+        border-radius: 30px;
+        color: #fff;
+        text-align: center;
+        line-height: 45px;
+        cursor: pointer;
+    }
+    .modal_back {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.601);
+        opacity: 0;
+        visibility: hidden;
+        z-index: 9;
+    }
+    .back_on {
+        opacity: 1;
+        visibility: visible;
+    }
+    .body_lock {
+        height: 100%;
+        overflow: hidden;
+    }
+    @media (max-width: 640px) {
+        .modal {
+            width: 86%;
+            max-height: 90%;
+            overflow: scroll;
+        }
+    }
+    
