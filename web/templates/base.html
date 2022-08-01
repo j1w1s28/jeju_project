@@ -5,6 +5,9 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+        <!-- header CSS -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='/KDU/css/base.css') }}" />
+
         <!-- Graph 관련 Link -->
         <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="{{ url_for('static', filename='/KDU/css/chart.css') }}" />
@@ -20,9 +23,8 @@
         <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/snap.svg/0.4.1/snap.svg-min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/TweenMax.min.js"></script>
-        <link rel="stylesheet" href="{{ url_for('static', filename='KDU/css/weather.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='KDU/css/weather.css') }}" />
 
-        <!-- ONLOAD -->
         <script>
             var monthChecker = [];
             //막대그래프 id부여함수
@@ -54,18 +56,28 @@
             // ONLOAD 함수
             window.onload = function () {
                 //새로고침시 맨위로
-                history.scrollRestoration = "manual"
+                history.scrollRestoration = 'manual';
                 // 막대그래프 ID부여
                 columnGetID();
-                // 헤더 체커
+                // 버튼 체커
+                document.querySelector('#headerMapBtn').style.backgroundColor = '#60adfa';
+
+                //로딩창 제거
                 setTimeout(() => {
-                    document.querySelector('#tab-01').checked = true;
-                }, 100);
+                    document.querySelector('#loading').style.zIndex = -1;
+                    document.querySelector('#loading').style.opacity = 0;
+                }, 500);
             };
         </script>
         <title>Main</title>
     </head>
     <body>
+        <div id="loading"></div>
+        <script async>
+            document.querySelector('#loading').innerHTML = '<img id="loadingImg" src="../static/KDU/images/loadingImg.gif" alt="">';
+            document.querySelector('#loading').innerHTML += '<span id="loadingText">제주도로 날아가는 중...</span>';
+        </script>
+
         {% include 'header.html' %}
 
         <div id="baseDiv">{% block mapList %} {% endblock %}</div>
@@ -79,7 +91,7 @@
             mapChanger(1400);
 
             // 헤더 높이 맞추기 스크립트
-            document.querySelector('#baseDiv').style.marginTop = document.querySelector('#header').clientHeight + 'px';
+            document.querySelector('#baseDiv').style.marginTop = (30 + document.querySelector('#header').clientHeight) + 'px';
         </script>
 
         {% include 'footer.html' %}
