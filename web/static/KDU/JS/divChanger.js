@@ -10,17 +10,17 @@ function mapChanger(divWidth) {
             document.querySelector('#baseDiv').style.marginLeft = CustomMargin;
             document.querySelector('#baseDiv').style.marginRight = CustomMargin;
             //header 중앙정렬
-            document.querySelector('.tabs').style.marginLeft = 'auto';
-            //logo 중앙정렬
-            document.querySelector('#logo').style.marginLeft = CustomMargin;
-            document.querySelector('#logo').style.marginRight = CustomMargin;
+            document.querySelector('#headerBody').style.marginLeft = CustomMargin;
+            document.querySelector('#headerBody').style.marginRight = CustomMargin;
+            //modal 중앙정렬
+            document.querySelector('.modal').style.left = '50%';
         } else {
             //메인 DIV 보다 화면이 작을 때
             document.querySelector('#baseDiv').style.marginLeft = lmargin + 'px';
             //메인DIV 폭보다 화면이 작을 때 header
-            document.querySelector('.tabs').style.marginLeft = lmargin + ((divWidth - document.querySelector('.tabs').clientWidth) / 2) + 'px';
-            //메인DIV 폭보다 화면이 작을 때 logo
-            document.querySelector('#logo').style.marginLeft = lmargin + 'px';
+            document.querySelector('#headerBody').style.marginLeft = lmargin + 'px';
+            //modal 중앙정렬
+            document.querySelector('.modal').style.left = '720px';
         }
     } catch (error) {
         // console.log(error);
