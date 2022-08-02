@@ -86,10 +86,10 @@
                                                     : '<img src="{{ url_for("static", filename="img/circle_b.png")}}" height=25 width="25">'))
                                                 +
                                             '</div>'+
-                                            '<div class="col" style="width: 180; margin-top:10px;margin-bottom:5px;word-break:break-all;"><b>'+key+'</b></div>'+
+                                            '<div class="col" style="width: 180; margin-top:10px;margin-bottom:5px;word-break:break-all;"><b>'+ key +'</b></div>'+
                                             '<div class="w-100"></div>'+
                                             '<div class="col-2" style="margin-top:5px;margin-bottom:5px"><img src="{{ url_for("static", filename="img/line_b.png")}}" height=100% width="25" style="opacity: 0.7"></div>'+
-                                            '<div class="col" style="font-size:13px; margin-top:5px; margin-bottom:5px; width: 180px; table-layout:fixed;">'+add_list[key]+'<br></div>'+
+                                            '<div class="col" style="font-size:13px; margin-top:5px; margin-bottom:5px; width: 180px; table-layout:fixed;">'+ add_list[key] +'<br></div>'+
                                             '<div class="w-100"></div>'
                             document.querySelector('#selected_title').innerHTML += selected
                         }
@@ -194,7 +194,7 @@
                 <input type="checkbox" class="btn-check" id="category3" autocomplete="off" value="숙박" onclick="clickCategory(document.getElementById('inputGroupRegion').value)" checked />
                 <label class="btn btn-outline-primary" for="category3">🏠<br/>숙박</label>
             </div>
-            <!— 지도 지역 드롭다운 —>
+            <!-- 지도 지역 드롭다운 -->
                 <div class="input-group mb-3" style="z-index: 2; top: 10px; width: 140px; left: 542px;">
                     <select class="form-select" name="order_status" id="inputGroupRegion">
                         <option value="제주도">🏝제주도</option>
@@ -435,14 +435,16 @@
                     windowChecker = i;
 
                     if(document.querySelector("#btnId_"+id).value in add_list){
-                    document.querySelector("#InfobtnId_"+id).checked=true;
+                        document.querySelector("#InfobtnId_"+id).checked=true;
+                    }
+                    else {
+                        document.querySelector("#InfobtnId_"+id).checked=false;
                     }
                 };
             }
 
             function openwindow(marker, infowindow, i, id) {
                 // 이동할 위도 경도 위치 생성
-                console.log(marker, infowindow, i, id)
                 var moveLatLon = positions[i].latlng;
                 moveAndCircle(moveLatLon);
 
@@ -453,6 +455,9 @@
                 infoColor(i);
                 if(document.querySelector("#btnId_"+id).value in add_list){
                     document.querySelector("#InfobtnId_"+id).checked=true;
+                }
+                else {
+                    document.querySelector("#InfobtnId_"+id).checked=false;
                 }
                 windowChecker = i;
             }
@@ -490,9 +495,18 @@
             <script>
                 function resetAll() {
                     if (window.confirm('초기화 하시겠습니까?')) {
-                        deleteCookie("addlist")
-                        deleteCookie("addline")
-                        window.location.reload(); // 새로고침
+                        deleteCookie("addlist");
+                        deleteCookie("addline");
+                        add_list = [];
+                        linePath = [];
+                        document.querySelector('#selected_title').innerHTML = "";
+
+                        tmpPoly.setMap(null)
+                        for(var i of idChecker) {
+                            document.querySelector('#'+i).checked = false;
+                        }
+                        idChecker=[];
+                        // window.location.reload(); // 새로고침
                     }
                 }
             </script>
