@@ -246,6 +246,9 @@
                 }
                 
                 clickCategory(region);
+                
+                //모달 재정리
+                modalClean();
             });
 
             var mapContainer = document.getElementById('map'), // 지도를 표시할 div
@@ -387,7 +390,7 @@
                                     '</svg>' +
                                 '</label>' +
                             '</td>' +
-                            '<td><a class="btnM" data-toggle="modal" onclick="modalOpen(\'modal_'+i+'\');">🔍</a>'+
+                            '<td><a class="btnM" data-toggle="modal" onclick="modalOpen('+i+');">🔍</a>'+
                             ( positions[i].content ==='숙박'
                             ?'<div class="modal" id="modal_'+i+'">'+
                             '<div class="modal_text">'+
@@ -546,34 +549,43 @@
     document.getElementById('category1').click();
     addSelected(add_list)
     createLine(linePath)
-    
+</script>
+
+<script>
+    //모달 열기
     function modalOpen(id) {
-        id = '#'+id;
+        modalOff();
+        id = '#modal_'+id;
         $(id).addClass("modal_on");
         $(".modal_back").addClass("back_on");
     }
+    //모달 중앙정렬
     function modalCenter(){
             var modal_w = $(".modal").width()/2;
             $(".modal").css("margin-left", -modal_w);
             var modal_h = $(".modal").height()/2;
             $(".modal").css("margin-top", -modal_h);
-        }
-        modalCenter();
+    }
+    //모달 끄기
+    function modalOff(){
+        $(".modal").removeClass("modal_on");
+        $(".modal_back").removeClass("back_on");
+        $("body").removeClass("body_lock");
+    }
+    //모달 정리 스크립트
+    function modalClean() {
         $(window).resize(function(){
             modalCenter();
         });
-        function modalOff(){
-            $(".modal").removeClass("modal_on");
-            $(".modal_back").removeClass("back_on");
-            $("body").removeClass("body_lock");
-        }
         $(".modal_x").click(function(id){
             modalOff();
         });
         $(".modal_back").click(function(id){
             modalOff();
         });
-
+        modalCenter();
+    }
+    modalClean();
 </script>
 
 <!-- Graph공간 -->
