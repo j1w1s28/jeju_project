@@ -1,0 +1,30 @@
+<!-- 헤더 기본 탭 -->
+<header id="header">
+    <div id="headerBody">
+        <div id="logo">
+            <a href="/" style="font-size: 30pt; font-weight: bold; font-family: ulsanjunggu; text-decoration: none; color: #000">놀당갑서🍊</a>
+        </div>
+        <div id="headerBtn">
+            <button id="headerMapBtn" class="button-53" role="button" onclick="mapClick();">스마트 파인더</button>
+            <button id="headerInfoBtn" class="button-53" role="button" onclick="infoClick();">제주도 정보</button>
+        </div>
+    </div>
+</header>
+
+<script>
+    function mapClick() {
+        window.scrollTo(0, 0);
+    }
+    function infoClick() {
+        window.scrollTo(0, 900);
+    }
+    window.addEventListener('scroll', function () {
+        if (window.pageYOffset < 700) {
+            document.querySelector('#headerMapBtn').style.backgroundColor = '#60adfa';
+            document.querySelector('#headerInfoBtn').style.backgroundColor = '';
+        } else {
+            document.querySelector('#headerMapBtn').style.backgroundColor = '';
+            document.querySelector('#headerInfoBtn').style.backgroundColor = '#f99f99';
+        }
+    });
+</script>
