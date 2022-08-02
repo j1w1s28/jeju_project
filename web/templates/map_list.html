@@ -349,14 +349,14 @@
                     infowindows.push(infowindow);
 
                     // 마커 클릭하면 인포윈도우
-                    kakao.maps.event.addListener(marker, 'click', makeClickListener(map, marker, infowindow, i));
+                    kakao.maps.event.addListener(marker, 'click', makeClickListener(map, marker, infowindow, i, positions[i].id));
                     
                     // 제주도 리스트 추가(왼쪽)
                     var jejuList =
                         '<tr>' + 
-                            '<td><a onclick="openwindow(markers[' + i + '], infowindows[' + i + '], ' + i + ')"><img src="' + positions[i]['img_thumb'] + '" height="63" width="65" style="border-radius: 50px;"></a></td>' +
+                            '<td><a onclick="openwindow(markers[' + i + '], infowindows[' + i + '], ' + i + ', '+ positions[i].id+')"><img src="' + positions[i]['img_thumb'] + '" height="63" width="65" style="border-radius: 50px;"></a></td>' +
                             '<td style="vertical-align:middle; word-break:break-all; width: 226px; table-layout:fixed; ">'+
-                                '<a onclick="openwindow(markers[' + i + '], infowindows[' + i + '], ' + i + ')">' + positions[i]['title'] + '</a></td>' +
+                                '<a onclick="openwindow(markers[' + i + '], infowindows[' + i + '], ' + i + ', '+ positions[i].id+')">' + positions[i]['title'] + '</a></td>' +
                             '<td style="vertical-align:middle; padding-right: 0px;">' +
                                 '<label class="heart-switch">' +
                                     '<input type="checkbox" id="btnId_' +  positions[i].id + '" onClick="addBtn(this.id)" value="' + positions[i]['title'] + '"' + (positions[i]['title'] in add_list ? 'checked' : '') + '>' +
@@ -421,7 +421,7 @@
 
             // 마커 클릭 이벤트 //
             var circle = new kakao.maps.Circle({});
-            function makeClickListener(map, marker, infowindow, i) {
+            function makeClickListener(map, marker, infowindow, i, id) {
                 return function () {
                     var moveLatLon = positions[i].latlng;
                     moveAndCircle(moveLatLon);
@@ -433,11 +433,16 @@
                     infowindow.open(map, marker);
                     infoColor(i, map, marker);
                     windowChecker = i;
+
+                    if(document.querySelector("#btnId_"+id).value in add_list){
+                    document.querySelector("#InfobtnId_"+id).checked=true;
+                    }
                 };
             }
 
-            function openwindow(marker, infowindow, i) {
+            function openwindow(marker, infowindow, i, id) {
                 // 이동할 위도 경도 위치 생성
+                console.log(marker, infowindow, i, id)
                 var moveLatLon = positions[i].latlng;
                 moveAndCircle(moveLatLon);
 
@@ -446,6 +451,9 @@
                 }
                 infowindow.open(map, marker);
                 infoColor(i);
+                if(document.querySelector("#btnId_"+id).value in add_list){
+                    document.querySelector("#InfobtnId_"+id).checked=true;
+                }
                 windowChecker = i;
             }
 
