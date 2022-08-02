@@ -86,10 +86,10 @@
                                                     : '<img src="{{ url_for("static", filename="img/circle_b.png")}}" height=25 width="25">'))
                                                 +
                                             '</div>'+
-                                            '<div class="col" style="width: 180; margin-top:10px;margin-bottom:5px;word-break:break-all;"><b>'+ key +'</b></div>'+
+                                            '<div class="col" onclick="document.querySelector(\'#List'+add_list[key].slice(-1)[0]+'\').click()" style="width: 180; margin-top:10px;margin-bottom:5px;word-break:break-all;"><b>'+ key +'</b></div>'+
                                             '<div class="w-100"></div>'+
                                             '<div class="col-2" style="margin-top:5px;margin-bottom:5px"><img src="{{ url_for("static", filename="img/line_b.png")}}" height=100% width="25" style="opacity: 0.7"></div>'+
-                                            '<div class="col" style="font-size:13px; margin-top:5px; margin-bottom:5px; width: 180px; table-layout:fixed;">'+ add_list[key] +'<br></div>'+
+                                            '<div class="col" style="font-size:13px; margin-top:5px; margin-bottom:5px; width: 180px; table-layout:fixed;">'+ add_list[key].slice(0,-1) +'<br></div>'+
                                             '<div class="w-100"></div>'
                             document.querySelector('#selected_title').innerHTML += selected
                         }
@@ -111,6 +111,7 @@
                 
                 // 찜하기 클릭 함수
                 var idChecker = [];
+                var selectedMarker = [];
                 function addBtn(click_id) {
                     var title = document.querySelector("#"+click_id).value;
                     var tag = positions.find(x => x.id === click_id.split('_')[1]).tag.split(',').slice(0,5);
@@ -127,6 +128,7 @@
                             document.querySelector("#Info"+click_id).checked = true;
                         }
                         add_list[title] = tag;
+                        add_list[title].push(click_id);
 
                         // 추가시 위도 경도
                         x = positions.find(x => x.id === click_id.split('_')[1]).latlng.Ma;
@@ -225,6 +227,24 @@
                     infoClose();
                     windowChecker = undefined;
                 }
+
+                for(var i in add_list) {
+                    if(positions.findIndex((element) => element.title === i) >= 0){
+                        document.querySelector('#'+add_list[i].slice(-1)[0]).checked = false;
+                    }
+                }
+                document.querySelector('#selected_title').innerHTML = "";
+                deleteCookie("addlist");
+                deleteCookie("addline");
+                add_list = [];
+                linePath = [];
+                idChecker=[];
+                tmpPoly.setMap(null);
+                if(windowChecker != undefined){
+                    infoClose();
+                    windowChecker = undefined;
+                }
+                
                 clickCategory(region);
             });
 
@@ -252,6 +272,7 @@
             var checker = [];
             windowChecker = undefined;
             function clickCategory(region) {
+                
                 if(windowChecker != undefined){
                     infoClose();
                     windowChecker = undefined
@@ -271,6 +292,7 @@
                 if (region != '제주도'){
                     positions=positions.filter(function(obj) {return (obj.region === region);})
                 }
+                
                 createMarker();
             }
 
@@ -356,7 +378,7 @@
                         '<tr>' + 
                             '<td><a onclick="openwindow(markers[' + i + '], infowindows[' + i + '], ' + i + ', '+ positions[i].id+')"><img src="' + positions[i]['img_thumb'] + '" height="63" width="65" style="border-radius: 50px;"></a></td>' +
                             '<td style="vertical-align:middle; word-break:break-all; width: 226px; table-layout:fixed; ">'+
-                                '<a onclick="openwindow(markers[' + i + '], infowindows[' + i + '], ' + i + ', '+ positions[i].id+')">' + positions[i]['title'] + '</a></td>' +
+                                '<a id="ListbtnId_'+positions[i].id+'" onclick="openwindow(markers[' + i + '], infowindows[' + i + '], ' + i + ', '+ positions[i].id+')">' + positions[i]['title'] + '</a></td>' +
                             '<td style="vertical-align:middle; padding-right: 0px;">' +
                                 '<label class="heart-switch">' +
                                     '<input type="checkbox" id="btnId_' +  positions[i].id + '" onClick="addBtn(this.id)" value="' + positions[i]['title'] + '"' + (positions[i]['title'] in add_list ? 'checked' : '') + '>' +
@@ -495,17 +517,22 @@
             <script>
                 function resetAll() {
                     if (window.confirm('초기화 하시겠습니까?')) {
+                        for(var i in add_list) {
+                            if(positions.findIndex((element) => element.title === i) >= 0){
+                                document.querySelector('#'+add_list[i].slice(-1)[0]).checked = false;
+                            }
+                        }
+                        document.querySelector('#selected_title').innerHTML = "";
                         deleteCookie("addlist");
                         deleteCookie("addline");
                         add_list = [];
                         linePath = [];
-                        document.querySelector('#selected_title').innerHTML = "";
-
-                        tmpPoly.setMap(null)
-                        for(var i of idChecker) {
-                            document.querySelector('#'+i).checked = false;
-                        }
                         idChecker=[];
+                        tmpPoly.setMap(null);
+                        if(windowChecker != undefined){
+                            infoClose();
+                            windowChecker = undefined;
+                        }
                         // window.location.reload(); // 새로고침
                     }
                 }
