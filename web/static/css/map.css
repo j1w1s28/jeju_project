@@ -94,6 +94,9 @@
         z-index: 99;
         display: none;
     }
+    .modal::-webkit-scrollbar {
+        display: none;
+    }
     .modal_on {
         display: block;
     }
@@ -116,7 +119,7 @@
     .modal_x {
         width: 50px;
         height: 50px;
-        margin-left: 337px;
+        margin-left: 335px;
         background-color: #559bfa;
         border-radius: 50px;
         color: #fff;
