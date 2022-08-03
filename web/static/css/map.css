@@ -87,6 +87,7 @@
         bottom: 200%;
         height: 400px;
         background-color: rgb(255, 255, 255);
+        border-radius: 7px;
         z-index: 99;
         display: none;
     }
@@ -94,12 +95,13 @@
         display: block;
     }
     .modal_text {
-        padding: 16px;
+        padding: 14px;
         text-align: center;
         font-weight: bold;
     }
     .modal_t {
         font-size: 20px;
+        margin-top: 5px;
         margin-bottom: 0px;
     }
     .modal_img {
@@ -107,12 +109,13 @@
         float: left;
     }
     .modal_span {
+        margin-left: 300px;
         text-align: left;
         color: rgb(15, 15, 15);
         font-weight: 300;
     }
     .modal_info{
-        margin-top: 40px;
+        /* margin-top: 40px; */
         text-align: center;
         color: #000;
     }
