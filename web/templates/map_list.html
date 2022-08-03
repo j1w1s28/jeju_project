@@ -19,14 +19,15 @@
         x = Number('{{result[0][i]["y"]}}');
         y = Number('{{result[0][i]["x"]}}');
         tmp = {
-            id: '{{id}}',
+            id: '{{result[0][i]["id"]}}',
             title: '{{result[0][i]["name"]}}'.replace("amp;","").trim(),
             tag: '{{result[0][i]["alltag"]}}',
             address: '{{result[0][i]["fullAddress"]}}',
             roadaddress: '{{result[0][i]["fullRoadAddress"]}}',
             region : ('{{result[0][i]["fullAddress"]}}'.search("제주시") >= 0 ? "제주시" : "서귀포시" ),
             phoneno: '{{result[0][i]["phone"]}}',
-            content: '{{result[0][i]["<%description%>"]}}',
+            content: '음식점', 
+            description: '{{result[0][i]["<%description%>"]}}',
             hourinfo: '{{result[0][i]["bizhourInfo"]}}',
             menus : '{{result[0][i]["menus"]}}'.replace("&#39;","").trim(),
             img_thumb: '{{result[0][i]["imageURL"]}}',
@@ -379,9 +380,16 @@
                     kakao.maps.event.addListener(marker, 'click', makeClickListener(map, marker, infowindow, i, positions[i].id));
                     
                     // 제주도 리스트 추가(왼쪽)
+                    let img;
+                    if (positions[i]['img_thumb'] == 'None') {
+                        img = 'https://cdn-icons-png.flaticon.com/512/5964/5964593.png';
+                    } else {
+                        img = positions[i]['img_thumb'];
+                    }
+                    let imgSrc = '<div class="modal_img"><img src="'+img+'" style="border-radius: 100px; width: 200px; height: 200px;"></div><br>';
                     var jejuList =
                         '<tr>' + 
-                            '<td><a onclick="openwindow(markers[' + i + '], infowindows[' + i + '], ' + i + ', '+ positions[i].id+')"><img src="' + positions[i]['img_thumb'] + '" height="63" width="65" style="border-radius: 50px;"></a></td>' +
+                            '<td><a onclick="openwindow(markers[' + i + '], infowindows[' + i + '], ' + i + ', '+ positions[i].id+')"><img src="' + img + '" height="63" width="65" style="border-radius: 50px;"></a></td>' +
                             '<td style="vertical-align:middle; word-break:break-all; width: 226px; table-layout:fixed; ">'+
                                 '<a id="ListbtnId_'+positions[i].id+'" onclick="openwindow(markers[' + i + '], infowindows[' + i + '], ' + i + ', '+ positions[i].id+')">' + positions[i]['title'] + '</a></td>' +
                             '<td style="vertical-align:middle; padding-right: 0px;">' +
@@ -397,7 +405,7 @@
                             ?'<div class="modal" id="modal_'+i+'">'+
                             '<div class="modal_text">'+
                             '<p class="modal_t">'+positions[i].title+'</p>'+
-                            '<div class="modal_img"><img src="'+positions[i]['img_thumb']+'" height="150" width="250" style="border-radius: 5px;"></div><br>'+
+                            imgSrc+
                             '<div class="modal_span">'+'🏠 '+positions[i].address+'<br>'+'📞 '+positions[i].phoneno+'<br>'+'⏰ '+positions[i].hourinfo+'</div><br></div>'+
                             '<div class="modal_info">'+positions[i].centent+'</div>'+
                             '<div class="modal_x">닫기</div></div>'
@@ -405,14 +413,14 @@
                             ?'<div class="modal" id="modal_'+i+'">'+
                             '<div class="modal_text">'+
                             '<p class="modal_t">'+positions[i].title+'</p>'+
-                            '<div class="modal_img"><img src="'+positions[i]['img_thumb']+'" height="150" width="250" style="border-radius: 5px;"></div><br>'+
+                            imgSrc+
                             '<div class="modal_span">'+'🏠 '+positions[i].address+'<br>'+'📞 '+positions[i].phoneno+'<br>'+'⏰ '+positions[i].hourinfo+'</div><br></div>'+
                             '<div class="modal_info">'+positions[i].menus+'</div>'+
                             '<div class="modal_x">닫기</div></div>'
                             :'<div class="modal" id="modal_'+i+'">'+
                             '<div class="modal_text">'+
                             '<p class="modal_t">'+positions[i].title+'</p>'+
-                            '<div class="modal_img"><img src="'+positions[i]['img_thumb']+'" height="150" width="250" style="border-radius: 5px;"></div><br>'+
+                            imgSrc+
                             '<div class="modal_span">'+'🏠 '+positions[i].address+'<br>'+'📞 '+positions[i].phoneno+'<br>'+'⏰ '+positions[i].hourinfo+'<br>'+'💵 '+'입장료'+'</div><br></div>'+
                             '<div class="modal_info">'+positions[i].menus+'</div>'+
                             '<div class="modal_x">닫기</div></div>')
