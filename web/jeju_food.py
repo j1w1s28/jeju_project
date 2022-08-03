@@ -5,7 +5,7 @@ import jeju_db
 app = Flask(__name__)
 
 def db_data():
-    sql = "select* from (select * from jeju_data where longitude != 'None' or latitude != 'None' limit 50) A order by A.title"
+    sql = "select* from (select * from jeju_data_real where x != 'None' or y != 'None' limit 50) A order by A.name"
     data = jeju_db.db_connect(sql)
     data = pd.DataFrame(data).T.to_dict()
     return [data, len(data)]
