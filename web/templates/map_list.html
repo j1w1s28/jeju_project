@@ -16,18 +16,20 @@
         var place = [];
         
         ('{% for i in range(result[1]) %}');
-        x = Number('{{result[0][i]["latitude"]}}');
-        y = Number('{{result[0][i]["longitude"]}}');
+        x = Number('{{result[0][i]["y"]}}');
+        y = Number('{{result[0][i]["x"]}}');
         tmp = {
-            id: '{{i}}',
-            title: '{{result[0][i]["title"]}}'.replace("amp;","").trim(),
+            id: '{{id}}',
+            title: '{{result[0][i]["name"]}}'.replace("amp;","").trim(),
             tag: '{{result[0][i]["alltag"]}}',
-            address: '{{result[0][i]["address"]}}',
-            roadaddress: '{{result[0][i]["roadaddress"]}}',
-            region : ('{{result[0][i]["address"]}}'.search("제주시") >= 0 ? "제주시" : "서귀포시" ),
-            phoneno: '{{result[0][i]["phoneno"]}}',
-            content: '{{result[0][i]["contentscd"]}}',
-            img_thumb: '{{result[0][i]["thumbnailpath"]}}',
+            address: '{{result[0][i]["fullAddress"]}}',
+            roadaddress: '{{result[0][i]["fullRoadAddress"]}}',
+            region : ('{{result[0][i]["fullAddress"]}}'.search("제주시") >= 0 ? "제주시" : "서귀포시" ),
+            phoneno: '{{result[0][i]["phone"]}}',
+            content: '{{result[0][i]["<%description%>"]}}',
+            hourinfo: '{{result[0][i]["bizhourInfo"]}}',
+            menus : '{{result[0][i]["menus"]}}'.replace("&#39;","").trim(),
+            img_thumb: '{{result[0][i]["imageURL"]}}',
             latlng: new kakao.maps.LatLng(x, y),
         };
         ('{% if(result[0][i]["contentscd"] == "음식점") %}');
@@ -395,30 +397,24 @@
                             ?'<div class="modal" id="modal_'+i+'">'+
                             '<div class="modal_text">'+
                             '<p class="modal_t">'+positions[i].title+'</p>'+
-                            '<div class="modal_img"><img src="'+positions[i]['img_thumb']+'" height="150" width="220" style="border-radius: 20px;"></div><br>'+
-                            '<span class="modal_span">'+positions[i].address+'</span><br>'+
-                            '<span class="modal_span">'+positions[i].phoneno+'</span><br>'+
-                            '<span class="modal_span">'+'체크인'+'</span><br></div>'+
-                            '<div class="modal_info">'+'등급/부대시설/정보'+'</div>'+
+                            '<div class="modal_img"><img src="'+positions[i]['img_thumb']+'" height="150" width="250" style="border-radius: 5px;"></div><br>'+
+                            '<div class="modal_span">'+'🏠 '+positions[i].address+'<br>'+'📞 '+positions[i].phoneno+'<br>'+'⏰ '+positions[i].hourinfo+'</div><br></div>'+
+                            '<div class="modal_info">'+positions[i].centent+'</div>'+
                             '<div class="modal_x">닫기</div></div>'
                             :( positions[i].content === '음식점'
                             ?'<div class="modal" id="modal_'+i+'">'+
                             '<div class="modal_text">'+
                             '<p class="modal_t">'+positions[i].title+'</p>'+
-                            '<div class="modal_img"><img src="'+positions[i]['img_thumb']+'" margin-left="10px;" height="150" width="220" style="border-radius: 20px;"></div><br>'+
-                            '<span class="modal_span">'+positions[i].address+'</span><br>'+
-                            '<span class="modal_span">'+positions[i].phoneno+'</span><br>'+
-                            '<span class="modal_span">'+'운영시간'+'</span><br></div>'+
-                            '<div class="modal_info">'+'메뉴/정보'+'</div>'+
+                            '<div class="modal_img"><img src="'+positions[i]['img_thumb']+'" height="150" width="250" style="border-radius: 5px;"></div><br>'+
+                            '<div class="modal_span">'+'🏠 '+positions[i].address+'<br>'+'📞 '+positions[i].phoneno+'<br>'+'⏰ '+positions[i].hourinfo+'</div><br></div>'+
+                            '<div class="modal_info">'+positions[i].menus+'</div>'+
                             '<div class="modal_x">닫기</div></div>'
                             :'<div class="modal" id="modal_'+i+'">'+
                             '<div class="modal_text">'+
                             '<p class="modal_t">'+positions[i].title+'</p>'+
-                            '<div class="modal_img"><img src="'+positions[i]['img_thumb']+'" margin-left="10px;" height="150" width="220" style="border-radius: 20px;"></div><br>'+
-                            '<span class="modal_span">'+positions[i].address+'</span><br>'+
-                            '<span class="modal_span">'+positions[i].phoneno+'</span><br>'+
-                            '<span class="modal_span">'+'운영시간'+'</span><br></div>'+
-                            '<div class="modal_info">'+'입장료/정보'+'</div>'+
+                            '<div class="modal_img"><img src="'+positions[i]['img_thumb']+'" height="150" width="250" style="border-radius: 5px;"></div><br>'+
+                            '<div class="modal_span">'+'🏠 '+positions[i].address+'<br>'+'📞 '+positions[i].phoneno+'<br>'+'⏰ '+positions[i].hourinfo+'<br>'+'💵 '+'입장료'+'</div><br></div>'+
+                            '<div class="modal_info">'+positions[i].menus+'</div>'+
                             '<div class="modal_x">닫기</div></div>')
                             )+
                             '<div class="modal_back"></div>'+
