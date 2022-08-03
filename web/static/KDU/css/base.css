@@ -55,6 +55,10 @@ body {
     /* align-items: center; */
 }
 
+body::-webkit-scrollbar {
+    display: none;
+}
+
 #headerBody {
     width: 1400px;
     height: 140px;
