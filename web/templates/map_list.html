@@ -21,16 +21,18 @@
         tmp = {
             id: '{{result[0][i]["id"]}}',
             title: '{{result[0][i]["name"]}}'.replace("amp;","").trim(),
-            tag: '{{result[0][i]["alltag"]}}',
-            address: '{{result[0][i]["fullAddress"]}}',
-            roadaddress: '{{result[0][i]["fullRoadAddress"]}}',
-            region : ('{{result[0][i]["fullAddress"]}}'.search("제주시") >= 0 ? "제주시" : "서귀포시" ),
+            tag: '{{result[0][i]["keywords"]}}',
+            address:  '{{result[0][i]["fullRoadAddress"]}}',
+            region : ('{{result[0][i]["fullRoadAddress"]}}'.search("제주시") >= 0 ? "제주시" : "서귀포시" ),
             phoneno: '{{result[0][i]["phone"]}}',
-            content: '음식점', //'{{result[0][i]["contentscd"]}}', 
-            description: '{{result[0][i]["<%description%>"]}}',
+            content: '{{result[0][i]["contentscd"]}}', 
+            description: '{{result[0][i]["description"]}}',
             hourinfo: '{{result[0][i]["bizhourInfo"]}}',
             menus : '{{result[0][i]["menus"]}}'.replace("&#39;","").trim(),
-            img_thumb: '{{result[0][i]["imageURL"]}}',
+            categories : '{{result[0][i]["categories"]}}',
+            menuImg : '{{result[0][i]["menuImages"]}}',
+            img_thumb : '{{result[0][i]["imageURL"]}}',
+            reviewcnt: '{{result[0][i]["reviewCount"]}}',
             latlng: new kakao.maps.LatLng(x, y),
         };
         ('{% if(result[0][i]["contentscd"] == "음식점") %}');
@@ -41,7 +43,6 @@
         place.push(tmp);
         ('{% endif %}');
         ('{% endfor %}');
-
     </script>
 
     <!-- 장소명 테이블 -->
@@ -355,7 +356,7 @@
                                 '<div class="body">' +
                                     // '<div class="img">' + '<img src='+ positions[i].img + 'width="73" height="70">'+'</div>' +
                                     '<div class="desc">' +
-                                        '<div class="address">' + positions[i].roadaddress.replace(/"/g, '') + '</div>' +
+                                        '<div class="address">' + positions[i].address.replace(/"/g, '') + '</div>' +
                                         '<div class="phoneno">' + positions[i].phoneno.replace(/"/g, '') + '</div>' +
                                         '<div class="phoneno">' +
                                             '<label class="heart-switch">' +
@@ -403,28 +404,32 @@
                             '<td><a class="btnM" data-toggle="modal" onclick="modalOpen('+i+');">🔍</a>'+
                             ( positions[i].content ==='숙박'
                             ?'<div class="modal" id="modal_'+i+'">'+
+                            '<div class="modal_x">닫기</div>'+
                             '<div class="modal_text">'+
                             '<p class="modal_t">'+positions[i].title+'</p>'+
-                            imgSrc+
-                            '<div class="modal_span">'+'🏠 '+positions[i].address+'<br>'+'📞 '+positions[i].phoneno+'<br>'+'⏰ '+positions[i].hourinfo+'</div><br></div>'+
-                            '<div class="modal_info">'+positions[i].description+'</div>'+
-                            '<div class="modal_x">닫기</div></div>'
+                            imgSrc+'</div>'+
+                            '<div class="modal_span">🏠 '+positions[i].categories+'<br>' +'🏠 '+positions[i].address+'<br>'+'📞 '+positions[i].phoneno+'<br>⏰ '+positions[i].hourinfo.replaceAll("/","<br>")+'<br><a href="'+positions[i].menuImg+'" target="_blank">📄 숙소 예약하기</a></div><hr>'+
+                            '<div class="modal_info">📝</div>'+
+                            '<div class="modal_info" style="text-align:left;">'+positions[i].description.replaceAll("|","<br>")+'</div>'+
+                            '</div>'
                             :( positions[i].content === '음식점'
                             ?'<div class="modal" id="modal_'+i+'">'+
                             '<div class="modal_x">닫기</div>'+
                             '<div class="modal_text">'+
                             '<p class="modal_t">'+positions[i].title+'</p>'+
                             imgSrc+'</div>'+
-                            '<div class="modal_span">'+'🏠 '+positions[i].address+'<br>'+'📞 '+positions[i].phoneno+'<br>'+'⏰ '+positions[i].hourinfo+'</div><br>'+
-                            '<div class="modal_info">'+positions[i].menus+'</div>'+
+                            '<div class="modal_span">🍽 '+positions[i].categories+'<br>' +'🏠 '+positions[i].address+'<br>'+'📞 '+positions[i].phoneno+'<br>'+'⏰<br>'+positions[i].hourinfo.replaceAll("/","<br>")+'</div><hr>'+
+                            '<div class="modal_info">'+positions[i].menus.replaceAll("/","<br>")+'<a href="'+positions[i].menuImg+'" target="_blank">📄 메뉴보기</a><hr>'+'유사한 맛집🍽'+'</div>'+
                             '</div>'
                             :'<div class="modal" id="modal_'+i+'">'+
+                            '<div class="modal_x">닫기</div>'+
                             '<div class="modal_text">'+
                             '<p class="modal_t">'+positions[i].title+'</p>'+
-                            imgSrc+
-                            '<div class="modal_span">'+'🏠 '+positions[i].address+'<br>'+'📞 '+positions[i].phoneno+'<br>'+'⏰ '+positions[i].hourinfo+'<br>'+'💵 '+'입장료'+'</div><br></div>'+
-                            '<div class="modal_info">'+positions[i].description+'</div>'+
-                            '<div class="modal_x">닫기</div></div>')
+                            imgSrc+'</div>'+
+                            '<div class="modal_span">🎡 '+positions[i].categories+'<br>' +'🏠 '+positions[i].address+'<br>'+'📞 '+positions[i].phoneno+'<br>'+'⏰<br>'+positions[i].hourinfo.replaceAll("|","<br>")+'<br>💵 💳<br>'+positions[i].menus.replaceAll("/","<br>")+'</div><hr>'+
+                            '<div class="modal_info">📝</div>'+
+                            '<div class="modal_info" style="text-align:left;">'+positions[i].description.replaceAll("|","<br>")+'</div>'+
+                            '</div>')
                             )+
                             '<div class="modal_back"></div>'+
                             '</td>'+
