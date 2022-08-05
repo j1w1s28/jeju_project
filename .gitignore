@@ -183,3 +183,7 @@ cython_debug/
 # End of https://www.toptal.com/developers/gitignore/api/python
 .DS_Store
 web/test.ipynb
+data/food_review_datas1.csv
+.gitignore
+data/food_review_datas3.csv
+data/food_review_datas2.csv
