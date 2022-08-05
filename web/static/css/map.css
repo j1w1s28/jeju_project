@@ -13,6 +13,9 @@
     padding: 10px;
     font-weight: bold;
 }
+.title {
+    width: 318px;
+}
 .desc .address {
     font-family: 'Malgun Gothic', dotum, '돋움';
     margin: 10px 5px 5px 5px;
