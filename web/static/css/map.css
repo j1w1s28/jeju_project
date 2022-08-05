@@ -157,3 +157,21 @@
         }
     }
     
+    /* simRank CSS */
+    .simInnerImg {
+        width: 80px;
+        height: 80px;
+        border-radius: 40px;
+
+    }
+    .simInnerDIV {
+        width: 80px;
+        display: inline-block;
+        vertical-align: top;
+        margin: 15px;
+    }
+    
+    .simInnerText {
+        /* word-break:keep-all; */
+        text-align: center;
+    }
