@@ -9,7 +9,6 @@
     <script>
         var region = '{{result[2]}}';
         document.querySelector('#span_title').innerHTML = (region ==  'je' ? '스마트파인더 - 제주시🍊' : '스마트파인더 - 서귀포시🌄');
-
         // 데이터 배열
         var food = [];
         var stay = [];
@@ -33,6 +32,9 @@
             menuImg : '{{result[0][i]["menuImages"]}}',
             img_thumb : '{{result[0][i]["imageURL"]}}',
             reviewcnt: '{{result[0][i]["reviewCount"]}}',
+            sim_rank1: '{{result[0][i]["sim_rank1"]}}'.replace("amp;",""),
+            sim_rank2: '{{result[0][i]["sim_rank2"]}}'.replace("amp;",""),
+            sim_rank3: '{{result[0][i]["sim_rank3"]}}'.replace("amp;",""),
             latlng: new kakao.maps.LatLng(x, y),
         };
         ('{% if(result[0][i]["contentscd"] == "음식점") %}');
@@ -380,7 +382,7 @@
                     // 마커 클릭하면 인포윈도우
                     kakao.maps.event.addListener(marker, 'click', makeClickListener(map, marker, infowindow, i, positions[i].id));
                     
-                    // 제주도 리스트 추가(왼쪽)
+                    // 이미지 없는놈들 귤로 만들어버리기
                     let img;
                     if (positions[i]['img_thumb'] == 'None') {
                         img = '../static/img/orange.png';
@@ -388,6 +390,8 @@
                         img = positions[i]['img_thumb'];
                     }
                     let imgSrc = '<div class="modal_img"><img src="'+img+'" style="border-radius: 100px; width: 200px; height: 200px; "></div><br>';
+
+                    // 제주도 리스트 추가(왼쪽)
                     var jejuList =
                         '<tr>' + 
                             '<td><a onclick="openwindow(markers[' + i + '], infowindows[' + i + '], ' + i + ', '+ positions[i].id+')"><img src="' + img + '" height="63" width="65" style="border-radius: 50px;"></a></td>' +
@@ -402,6 +406,7 @@
                                 '</label>' +
                             '</td>' +
                             '<td><a class="btnM" data-toggle="modal" onclick="modalOpen('+i+');">🔍</a>'+
+                            // 숙박
                             ( positions[i].content ==='숙박'
                             ?'<div class="modal" id="modal_'+i+'">'+
                             '<div class="modal_x">닫기</div>'+
@@ -436,9 +441,13 @@
                                             '</div>' +
                                         '</div>' + 
                                     '</div><br>'+
-                                    '유사한 맛집🍽'+'<br>'+'유사한 맛집이 아직 없어요😭'+
+                                    '<div>'+
+                                        '<div>유사한 맛집🍽</div>'+
+                                        '<div id="simId'+i+'" class="simClass"></div>'+
+                                    '</div>'+
                                 '</div>'+
                             '</div>'
+                            // 관광지
                             :'<div class="modal" id="modal_'+i+'">'+
                             '<div class="modal_x">닫기</div>'+
                             '<div class="modal_text">'+
@@ -467,9 +476,29 @@
                             '</td>'+
                             '</tr>';
 
+                            
                         document.querySelector('#jeju_list').innerHTML += jejuList;
-                }
+                        if(document.querySelector('#simId'+i) != null) {
+                            for(let j=1; j<4; j++){
+                                let sim = positions[i]["sim_rank"+j];
+                                if(sim != "None" | sim != ""){
+                                    let simText = '<a href="https://map.naver.com/v5/smart-around/place/'+sim.split(",")[2]+'" target="_blank" style="color:black"><div class="simInnerDIV">'+
+                                        '<img class="simInnerImg" src="'+(sim.split(",")[1]!="" ? sim.split(",")[1] : '../static/img/orange.png')+'"><br>'+
+                                        '<span class="simInnerText">'+sim.split(",")[0]+'</span>'+
+                                        '</div></a>';
+                                    document.querySelector('#simId'+i).innerHTML += simText;
+                                }
+                                else{
+                                    if(j==1){
+                                        document.querySelector('#simId'+i).innerHTML += "아직 유사한 맛집이 없어요😂";
+                                    }
+                                    break;
+                                }
+                            }
+                        }
+                    }
             }
+
 
             function infoClose() {
                 infowindows[windowChecker].close(map, markers[windowChecker]);
