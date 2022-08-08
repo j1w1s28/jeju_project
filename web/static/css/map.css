@@ -175,3 +175,7 @@
         /* word-break:keep-all; */
         text-align: center;
     }
+
+    .accordion {
+        margin-top: 10px;
+    }
