@@ -145,6 +145,24 @@
         opacity: 0.9;
         visibility: visible;
     }
+    .category_back {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: #fff;
+        visibility: hidden;
+        opacity: 0;
+        z-index: 11;
+        margin: auto;
+        text-align: center;
+        padding-top: 250px;
+    }
+    .category_back_on {
+        opacity: 0.7;
+        visibility: visible;
+    }
     .body_lock {
         height: 100%;
         overflow: hidden;

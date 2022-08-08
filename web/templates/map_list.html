@@ -47,6 +47,57 @@
         ('{% endfor %}');
     </script>
 
+    <!-- 모달 관련 함수 -->
+    <script>
+        //모달 열기
+        function modalOpen(id) {
+            modalOff();
+            id = '#modal_'+id;
+            $(id).addClass("modal_on");
+            $(".modal_back").addClass("back_on");
+            $("body").addClass("body_lock");
+        }
+        //모달 중앙정렬
+        function modalCenter(){
+                var modal_w = $(".modal").width()/2;
+                $(".modal").css("margin-left", -modal_w);
+                var modal_h = $(".modal").height()/2;
+                $(".modal").css("margin-top", -modal_h);
+        }
+        //모달 끄기
+        function modalOff(){
+            $(".modal").removeClass("modal_on");
+            $(".modal_back").removeClass("back_on");
+            $("body").removeClass("body_lock");
+        }
+        //모달 정리 스크립트
+        function modalClean() {
+            $(window).resize(function(){
+                modalCenter();
+            });
+            $(".modal_x").click(function(id){
+                modalOff();
+            });
+            $(".modal_back").click(function(id){
+                modalOff();
+            });
+            modalCenter();
+        }
+    </script>
+
+    <!-- 카테고리 변경 로딩 스크립트 -->
+    <script>
+        function loading() {
+            $('.category_back').addClass('category_back_on');
+            $('body').addClass('body_lock');
+            setTimeout(() => {
+                createMarker();
+                $('.category_back').removeClass('category_back_on');
+                $('body').removeClass('body_lock');
+            }, 0);
+        }
+    </script>
+
     <!-- 장소명 테이블 -->
     <div class="scrollBar" style="overflow-x: hidden; overflow-y: scroll; height: 630px; width: 345px; background-color: #fff; border-radius: 10px; position: absolute">
         <div class="about_text">
@@ -279,7 +330,6 @@
             var checker = [];
             windowChecker = undefined;
             function clickCategory(region) {
-                
                 if(windowChecker != undefined){
                     infoClose();
                     windowChecker = undefined
@@ -300,7 +350,8 @@
                     positions=positions.filter(function(obj) {return (obj.region === region);})
                 }
                 
-                createMarker();
+                // 로딩창 ON/OFF (내부에 createMarker함수 포함)
+                loading();
 
                 //모달 재정리
                 modalClean();
@@ -617,50 +668,16 @@
     </div>
 </div>
 <div class="modal_back"></div>
+<div class="category_back">
+    <img style="width: 128px;" src="../static/img/loadingBook.gif" alt="loadingBook"> <br>
+    <span class="loadingText" style="color: #000; font-size: 20pt;">장소 검색 중</span>
+</div>
 
 <!-- getCookie -->
 <script>
     document.getElementById('category1').click();
     addSelected(add_list)
     createLine(linePath)
-</script>
-
-<script>
-    //모달 열기
-    function modalOpen(id) {
-        modalOff();
-        id = '#modal_'+id;
-        $(id).addClass("modal_on");
-        $(".modal_back").addClass("back_on");
-        $("body").addClass("body_lock");
-    }
-    //모달 중앙정렬
-    function modalCenter(){
-            var modal_w = $(".modal").width()/2;
-            $(".modal").css("margin-left", -modal_w);
-            var modal_h = $(".modal").height()/2;
-            $(".modal").css("margin-top", -modal_h);
-    }
-    //모달 끄기
-    function modalOff(){
-        $(".modal").removeClass("modal_on");
-        $(".modal_back").removeClass("back_on");
-        $("body").removeClass("body_lock");
-    }
-    //모달 정리 스크립트
-    function modalClean() {
-        $(window).resize(function(){
-            modalCenter();
-        });
-        $(".modal_x").click(function(id){
-            modalOff();
-        });
-        $(".modal_back").click(function(id){
-            modalOff();
-        });
-        modalCenter();
-    }
-    modalClean();
 </script>
 
 <!-- Graph공간 -->

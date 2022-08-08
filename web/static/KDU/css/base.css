@@ -27,7 +27,7 @@
     width: 800px;
 }
 
-#loadingText {
+.loadingText {
     display: block;
     margin: auto;
     width: 800px;
