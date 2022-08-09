@@ -92,6 +92,10 @@
             $('body').addClass('body_lock');
             setTimeout(() => {
                 createMarker();
+
+                //모달 재정리
+                modalClean();
+                
                 $('.category_back').removeClass('category_back_on');
                 $('body').removeClass('body_lock');
             }, 0);
@@ -352,9 +356,6 @@
                 
                 // 로딩창 ON/OFF (내부에 createMarker함수 포함)
                 loading();
-
-                //모달 재정리
-                modalClean();
             }
 
             // 마커 삭제 함수
