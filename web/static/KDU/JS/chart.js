@@ -133,7 +133,7 @@ function chartLoading(chartData) {
             {
                 id: 'g2',
                 valueField: 'visitNum',
-                title: '눌러서 토글하세요',
+                title: '차트를 눌러 월별 상세 통계를 볼 수 있습니다.',
                 type: 'line',
                 // valueAxis: 'a2',
                 lineColor: '#f6695f',

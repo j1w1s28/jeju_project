@@ -1,5 +1,4 @@
 from flask import Flask, request, render_template, jsonify
-import pandas as pd
 import jeju_db
 
 app = Flask(__name__)
@@ -7,7 +6,6 @@ app = Flask(__name__)
 def db_data():
     sql = "select * from jeju_data_web where x != 'None' or y != 'None'"
     data = jeju_db.db_connect(sql)
-    data = pd.DataFrame(data).T.to_dict()
     return [data, len(data)]
 
 
