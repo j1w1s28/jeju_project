@@ -508,6 +508,7 @@
                             imgSrc+'</div>'+
                             '<div class="modal_span">🎡 '+positions[i].categories+'<br>' +'🏠 '+positions[i].address+'<br>' +
                                 (positions[i].phoneno != "" ? '📞 '+positions[i].phoneno+'<br>' : "")+
+                                (positions[i].hourinfo != "" ? '⏰<br>'+positions[i].hourinfo.replaceAll("|","<br>") : "")+
                             '<div class="modal_info">'+
                                     '<div class="accordion" id="accordion'+i+'">'+
                                         '<div class="accordion-item">' +
@@ -545,7 +546,7 @@
                                 }
                                 else{
                                     if(j==1){
-                                        document.querySelector('#simId'+i).innerHTML += "아직 유사한 맛집이 없어요😂";
+                                        document.querySelector('#simId'+i).innerHTML += "<br>아직 유사한 맛집이 없어요😂";
                                     }
                                     break;
                                 }
